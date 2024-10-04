@@ -2,8 +2,8 @@
 
 ### Invoice tracking
 
-## ![](https://github.com/hector3211/socket/blob/dev/notify.gif)
+## ![](https://github.com/hector3211/socket/blob/main/notify.gif)
 
 ### User management
 
-## ![](https://github.com/hector3211/socket/blob/dev/notify-two.gif)
+## ![](https://github.com/hector3211/socket/blob/main/notify-two.gif)
