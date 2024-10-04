@@ -1,0 +1,14 @@
+.env*
+.env-local*
+
+mydb.db
+Makefile
+
+todo.md
+
+tmp/*
+bin/*
+
+
+# sst
+.sst

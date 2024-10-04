@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#admin-scroller {
+  overflow-y: scroll; /* Enable scrolling */
+}
+
+/* Hide scrollbar for .scrollable-content */
+#admin-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+#admin-scroller {
+  scrollbar-width: none; /* For Firefox */
+}

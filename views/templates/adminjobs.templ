@@ -1,0 +1,157 @@
+package templates
+
+import (
+"fmt"
+"server/models"
+"strconv"
+)
+
+templ AdminJobs(jobs []models.Invoice) {
+<div class="container mx-auto px-6 py-8">
+    @CreatJobBtn()
+    @JobSeach()
+    @AdminJobTable(jobs)
+</div>
+}
+
+templ CreatJobBtn() {
+<a href="jobs/new" class="max-w-32">
+    <button type="submit"
+        class="mt-5 font-semibold text-center p-2 px-3 rounded-md bg-zinc-900 text-white flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-package-plus">
+            <path d="M16 16h6"></path>
+            <path d="M19 13v6"></path>
+            <path
+                d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14">
+            </path>
+            <path d="m7.5 4.27 9 5.15"></path>
+            <polyline points="3.29 7 12 12 20.71 7"></polyline>
+            <line x1="12" x2="12" y1="22" y2="12"></line>
+        </svg>
+        <p>
+            Create Invoice
+        </p>
+    </button>
+</a>
+}
+
+templ JobSeach() {
+<div id="admin-job-search" class="flex flex-col gap-2 h-24 my-5">
+    <label class="font-bold text-xl">Search Invoice</label>
+    <input class="border border-stone-500 p-2 rounded-md" id="job-query" name="job-query" type="search"
+        hx-post="/admin/jobs" hx-trigger="input changed delay:500ms, search" hx-target="#admin-job-table-body"
+        hx-indicator=".htmx-indicator" />
+</div>
+}
+
+templ AdminJobTable(jobs []models.Invoice) {
+<div id="admin-job-table" class="mt-10 overflow-auto">
+    <table class="table-auto container bg-white shadow-md rounded-lg">
+        <thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+            <tr>
+                <th class="py-3 px-6 text-left">Invoice</th>
+                <th class="py-3 px-6 text-left">User</th>
+                <th class="py-3 px-6 text-left">Status</th>
+                <th class="py-3 px-6 text-center">Created</th>
+                <th class="py-3 px-6 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="admin-job-table-body" hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML"
+            class="max-w-full text-gray-600 text-sm font-light">
+            for _,job := range jobs {
+            @JobRow(job)
+            }
+        </tbody>
+    </table>
+</div>
+}
+
+templ JobRow(job models.Invoice) {
+<tr class="border-b border-gray-200 hover:bg-gray-100">
+    <td class="py-3 px-6 text-left whitespace-nowrap">
+        { job.Invoice }
+    </td>
+    <td class="py-3 px-6 text-left whitespace-nowrap">
+        { strconv.Itoa(job.UserId) }
+    </td>
+    <td class="py-3 px-6 text-left font-medium">
+        @StatusBadge(models.JobStatus(job.Status))
+    </td>
+    <td class="py-3 px-6 text-center">
+        9/22/24
+    </td>
+    <td class="py-3 px-6 text-center">
+        <div class="flex item-center justify-center space-x-3">
+            <button
+                class="w-8 p-2 text-gray-800 rounded-md transition transform hover:bg-white hover:scale-110 hover:cursor-pointer"
+                hx-get={ fmt.Sprintf("/admin/jobs/edit/%s", strconv.Itoa(job.ID)) } hx-target="body"
+                hx-swap="beforeend">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                    </path>
+                </svg>
+            </button>
+            <button hx-delete={ fmt.Sprintf("/admin/jobs/%d", job.ID) }
+                class="w-8 p-2 text-gray-800 bg-rose-400 rounded-md transition transform hover:scale-110 hover:cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+}
+
+templ StatusBadge(status models.JobStatus) {
+if status == models.JOBPENDING {
+<span class="bg-orange-400 text-black py-1 px-3 rounded-full text-xs">
+    { status.String() }
+</span>
+} else if status == models.JOBFABRICATING {
+<span class="bg-yellow-400 text-black py-1 px-3 rounded-full text-xs">
+    { status.String() }
+</span>
+} else if status == models.JOBCUTTING {
+<span class="bg-lime-400 text-black py-1 px-3 rounded-full text-xs">
+    { status.String() }
+</span>
+} else {
+<span class="bg-emerald-500 text-black py-1 px-3 rounded-full text-xs">
+    { status.String() }
+</span>
+}
+}
+
+templ EmptyJobRow() {
+<tr class="border-b border-gray-200 hover:bg-gray-100">
+    <p class="font-medium p-2">No Jobs...</p>
+</tr>
+}
+
+templ EmptyJobTable() {
+<div class="mt-10">
+    <table class="container bg-white shadow-md rounded-lg overflow-x-scroll">
+        <thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+            <tr>
+                <th class="py-3 px-6 text-left">Invoice</th>
+                <th class="py-3 px-6 text-left">User</th>
+                <th class="py-3 px-6 text-left">Status</th>
+                <th class="py-3 px-6 text-center">Created</th>
+                <th class="py-3 px-6 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="job-table" class="text-gray-600 text-sm font-light">
+            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <p class="font-medium p-2">No Jobs...</p>
+            </tr>
+        </tbody>
+    </table>
+</div>
+}

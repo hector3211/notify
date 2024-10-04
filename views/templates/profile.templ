@@ -1,0 +1,17 @@
+package templates
+
+import "server/models"
+
+templ Profile(jobs []models.Invoice) {
+	<div>
+		if len(jobs) > 0 {
+			<div class="mt-10 shadow-sm shadow-stone-300 p-10 rounded-lg">
+				for _, invs := range jobs {
+					<p class="font-semibold">{ invs.Invoice }</p>
+				}
+			</div>
+		} else {
+			<p class="mt-24 text-center text-3xl font-bold">No Invoices</p>
+		}
+	</div>
+}

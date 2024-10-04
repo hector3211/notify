@@ -1,0 +1,82 @@
+package templates
+
+templ Home() {
+<div id="home-container" class="h-screen flex flex-col justify-center items-center">
+    <div class="w-full flex justify-center items-center space-x-2">
+        <h1 class="text-5xl font-bold tracking-wide">Notify</h1>
+        <p class="font-light mt-8">by</p>
+        <a href="https://depotgranite.com" target="_blank" class="mt-8 underline underline-offset-4 font-semibold">
+            Depot
+            Granite
+        </a>
+    </div>
+    <div class="container mt-14 w-full flex justify-center items-center gap-6">
+        <a href="/login"
+            class="text-center w-28 font-semibold p-2 px-3 rounded-md bg-zinc-900 text-white flex justify-center items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-fingerprint">
+                <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path>
+                <path d="M14 13.12c0 2.38 0 6.38-1 8.88"></path>
+                <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"></path>
+                <path d="M2 12a10 10 0 0 1 18-6"></path>
+                <path d="M2 16h.01"></path>
+                <path d="M21.8 16c.2-2 .131-5.354 0-6"></path>
+                <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"></path>
+                <path d="M8.65 22c.21-.66.45-1.32.57-2"></path>
+                <path d="M9 6.8a6 6 0 0 1 9 5.2v2"></path>
+            </svg>
+            <p>
+                Login
+            </p>
+        </a>
+        <a href="/signup"
+            class="text-center font-semibold p-2 px-3 rounded-md border border-black flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-square-arrow-out-up-right">
+                <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"></path>
+                <path d="m21 3-9 9"></path>
+                <path d="M15 3h6v6"></path>
+            </svg>
+            <p>
+                Sign up
+            </p>
+        </a>
+    </div>
+</div>
+}
+
+templ TrackerForm() {
+<form hx-post="/jobs" hx-target="#home-job-result" hx-swap="outerHTML"
+    class="shadow-sm shadow-stone-300 p-10 rounded-lg">
+    <p class="font-bold text-3xl p-6">Job Tracker</p>
+    <div class="flex flex-col gap-2">
+        <label class="font-bold text-lg">Last Name</label>
+        <input class="border border-black p-2 rounded-md" id="name" name="name" type="text" placeholder="doe"
+            required />
+    </div>
+    <div class="flex flex-col gap-2">
+        <label class="font-bold text-lg">Email</label>
+        <input class="border border-stone-500 p-2 rounded-md" id="email" name="email" type="text"
+            placeholder="johndoe@gmail.com" required />
+    </div>
+    <div class="flex flex-col gap-2">
+        <label class="font-bold text-lg">Invoice</label>
+        <input class="border border-stone-500 p-2 rounded-md" id="invoice" name="invoice" type="number"
+            placeholder="3487" required />
+    </div>
+    <button class="flex justify-center space-x-2 mt-5 items-center w-28 p-2 rounded-md bg-zinc-900 text-white"
+        type="submit">
+        <p class="font-semibold">
+            Track
+        </p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-search">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+        </svg>
+    </button>
+</form>
+}

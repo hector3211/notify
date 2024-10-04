@@ -1,0 +1,15 @@
+package templates
+
+import "server/models"
+
+templ Invoice(invoice models.Invoice) {
+	<div id="job-tacker-results" class="">
+		<h3 class="font-semibold text-lg">Job Status</h3>
+		<div class="shadow-sm shadow-stone-300 p-10 rounded-lg">
+			<div class="flex flex-col gap-2">
+				<label class="font-bold text-lg">Status</label>
+				<p>{ models.JobStatus(invoice.Status).String() }</p>
+			</div>
+		</div>
+	</div>
+}

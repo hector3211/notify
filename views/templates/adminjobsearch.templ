@@ -1,0 +1,15 @@
+package templates
+
+import "server/models"
+
+templ JobSearch(jobs []models.Invoice) {
+	<tr class="border-b border-gray-200 hover:bg-gray-100">
+		if len(jobs) > 0 {
+			for _, job := range jobs {
+				@JobRow(job)
+			}
+		} else {
+			<p class="font-medium p-2">No Matches...</p>
+		}
+	</tr>
+}

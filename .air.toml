@@ -1,0 +1,70 @@
+# Config file for Air
+
+[build]
+# Set the build directory where the binary will be output
+bin = "bin/main" # The binary file path
+
+# Command to generate templ files and build the application
+cmd = "templ generate && go build -o bin/main cmd/main.go" # Run templ generate and then build the app
+delay = 0
+exclude_dir = ["assets", "tmp", "vendor", "testdata"]
+exclude_file = []
+exclude_regex = ["_test.go", ".*_templ.go"]
+exclude_unchanged = false
+follow_symlink = false
+full_bin = ""
+include_dir = []
+include_ext = ["go", "tpl", "tmpl", "templ", "html"]
+include_file = []
+kill_delay = "0s"
+log = "build-errors.log"
+poll = false
+poll_interval = 0
+rerun = false
+rerun_delay = 500
+send_interrupt = false
+stop_on_error = false
+post_cmd = ["kill -15 $(lsof -ti:8080)"]
+
+# [watch]
+# Directories or files to watch for changes
+# include = [
+#     "cmd/**/*",        # Watch files in the cmd directory
+#     "utils/**/*",      # Watch files in the utils directory
+#     "models/**/*",     # Watch files in the models directory
+#     "api/**/*",        # Watch files in the api directory
+#     "middleware/**/*", # Watch files in the middleware directory
+#     "templates/**",
+#     "*.templ",         # Watch for .templ files
+#     "*.tmpl",          # Watch for .templ files
+#     "*.tpl",           # Watch for .templ files
+#     "*.html",          # Watch for .templ files
+#     "go",
+# ]
+# exclude = [
+#     "vendor/**/*", # Exclude the vendor directory
+#     ".*_templ.go",
+#     "_test.go",
+# ]
+
+[log]
+# Logging level for Air
+level = "info" # Options: debug, info, warn, error, fatal, panic
+
+# [core]
+# Watch delay in seconds (optional)
+# watch_delay = 0 # Default is 1000 milliseconds (1 second)
+
+# Enable or disable logging of file changes (optional)
+# log_changes = true
+
+[misc]
+clean_on_exit = false
+
+[screen]
+clear_on_rebuild = false
+keep_scroll = true
+
+# [server]
+# # HTTP server settings (optional)
+# addr = ":8080" # Default server address

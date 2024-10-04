@@ -1,0 +1,95 @@
+package templates
+
+templ CreateUserForm() {
+	<form
+		method="POST"
+		hx-post="/admin/users/new"
+		hx-trigger="submit"
+		hx-swap="afterend"
+		hx-on::after-request="this.reset()"
+		class="mt-10 shadow-sm shadow-stone-300 p-10 rounded-lg"
+	>
+		<p class="font-bold text-3xl p-6">Create User</p>
+		<div class="flex flex-col gap-2">
+			<div class="flex flex-col md:flex-row items-center space-x-6">
+				<span class="container flex flex-col">
+					<label class="font-semibold text-lg">First Name</label>
+					<input
+						class="border border-black p-2 rounded-md"
+						id="firstname"
+						name="firstname"
+						type="text"
+						placeholder="john"
+						required
+					/>
+				</span>
+				<span class="container flex flex-col">
+					<label class="font-semibold text-lg">Last Name</label>
+					<input
+						class="border border-black p-2 rounded-md"
+						id="lastname"
+						name="lastname"
+						type="text"
+						placeholder="doe"
+						required
+					/>
+				</span>
+			</div>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label class="font-semibold text-lg">Email</label>
+			<input
+				class="border border-stone-500 p-2 rounded-md"
+				id="email"
+				name="email"
+				type="text"
+				placeholder="johndoe@gmail.com"
+				required
+			/>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label class="font-semibold text-lg">Password</label>
+			<input
+				class="border border-stone-500 p-2 rounded-md"
+				id="admin-createuser-password"
+				name="passwrod"
+				type="text"
+				minlength="3"
+				maxlength="20"
+				required
+			/>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="role" class="font-semibold text-lg">Role</label>
+			<select id="role" name="role" class="border border-stone-500 p-2 rounded-md">
+				<option value="user" selected>User</option>
+				<option value="admin">Admin</option>
+			</select>
+		</div>
+		<button
+			class="mt-10 flex justify-center space-x-2 font-semibold items-center p-2 px-3 rounded-md bg-zinc-900 text-white"
+			type="submit"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="lucide lucide-user-plus"
+			>
+				<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+				<circle cx="9" cy="7" r="4"></circle>
+				<line x1="19" x2="19" y1="8" y2="14"></line>
+				<line x1="22" x2="16" y1="11" y2="11"></line>
+			</svg>
+			<p>
+				Create User
+			</p>
+		</button>
+	</form>
+}
