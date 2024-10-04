@@ -18,7 +18,7 @@ ENV CGO_ENABLED=1
 RUN go build -o server ./cmd/main.go
 
 # Copy your SQLite database file
-COPY mydb.db /data/mydb.db
+# COPY mydb.db /data/mydb.db
 
 # Set the path for the SQLite database (inside the volume)
 # Assuming your app references this path for the SQLite database
