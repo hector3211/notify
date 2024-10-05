@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/models"
 	"server/pkg/service"
@@ -11,11 +11,12 @@ import (
 )
 
 type SearchJobHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewPostSearchJobHandler(db *sql.DB) *SearchJobHandler {
-	return &SearchJobHandler{db: db}
+func NewPostSearchJobHandler(db *sql.DB, slog *slog.Logger) *SearchJobHandler {
+	return &SearchJobHandler{db: db, slog: slog}
 }
 
 func (h *SearchJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +25,7 @@ func (h *SearchJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	invoiceService := service.NewInvoiceService(h.db)
+	invoiceService := service.NewInvoiceService(h.db, h.slog)
 	query := r.FormValue("job-query")
 
 	allInvoices := invoiceService.GetAllInvoices()
@@ -38,7 +39,7 @@ func (h *SearchJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	err := templates.JobSearch(filteredResults).Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render admin page: %v", err)
+		h.slog.Error("Failed to render admin page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

@@ -14,8 +14,8 @@ func NewNotFoundHanlder() *NotFoundHandler {
 
 func (n *NotFoundHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var isAuth templates.IsAuthenticated
-	_, ok := middleware.GetUserCtxFromCookie(w, r)
-	if !ok {
+	userCtx := middleware.GetUserCtxFromCookie(w, r)
+	if userCtx == nil {
 		isAuth = false
 	} else {
 		isAuth = true

@@ -1,22 +1,24 @@
 package handlers
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 	"server/middleware"
 	"server/views/templates"
 )
 
-type LoginHandler struct{}
+type LoginHandler struct {
+	slog *slog.Logger
+}
 
-func NewLoginHanlder() *LoginHandler {
-	return &LoginHandler{}
+func NewLoginHanlder(slog *slog.Logger) *LoginHandler {
+	return &LoginHandler{slog: slog}
 }
 
 func (h *LoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var isAuth templates.IsAuthenticated
-	_, ok := middleware.GetUserCtxFromCookie(w, r)
-	if ok {
+	userCtx := middleware.GetUserCtxFromCookie(w, r)
+	if userCtx != nil {
 		w.Header().Set("HX-Redirect", "/profile")
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return
@@ -28,7 +30,7 @@ func (h *LoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	page := templates.Login()
 	err := templates.Layout(page, isAuth, "Notify-login").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render login page: %v", err)
+		h.slog.Error("Failed to render login page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

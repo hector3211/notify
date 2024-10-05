@@ -5,7 +5,7 @@ import "server/models"
 templ Toast(toastType models.Notification, message string) {
 if toastType == models.SuccessNotification {
 <div hx-on::load="setTimeout(() => { this.remove() }, 2000)" id="toaster"
-    class="text-left fixed z-50 bottom-5 right-5 rounded-lg p-3 px-2 border border-emerald-500 bg-background text-foreground transition-opacity duration-[2000ms] opacity-100  ">
+    class="text-left fixed z-50 bottom-5 right-5 rounded-lg p-3 px-2 border border-emerald-500 bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
     <p class="font-medium">{ message }</p>
 </div>
 } else if toastType == models.InfoNotification {

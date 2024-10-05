@@ -2,43 +2,29 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/middleware"
-	"server/models"
 	"server/pkg/service"
 	"server/views/templates"
 )
 
 type AdminUserHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewAdminUserHandler(db *sql.DB) *AdminUserHandler {
-	return &AdminUserHandler{db: db}
+func NewAdminUserHandler(db *sql.DB, logger *slog.Logger) *AdminUserHandler {
+	return &AdminUserHandler{db: db, slog: logger}
 }
 
 func (h *AdminUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	userCtx, ok := middleware.GetUserCtx(r)
-	if !ok {
-		log.Println("User context not found")
+	userCtx := middleware.GetUserCtx(r)
+	if userCtx == nil {
+		h.slog.Info("user ctx not found")
 		w.Header().Set("HX-Redirect", "/")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
-	}
-	if userCtx.ID == 0 {
-		log.Printf("User context is missing ID: %+v", userCtx)
-		w.Header().Set("HX-Redirect", "/")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
-	if userCtx.Role != models.ADMIN {
-		log.Printf("user is not an admin: %+v", userCtx)
-		w.Header().Set("HX-Redirect", "/")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-
 	}
 
 	userService := service.NewUserService(h.db)
@@ -47,7 +33,7 @@ func (h *AdminUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	page := templates.AdminUsers(*userCtx, users)
 	err := templates.Admin(page, *userCtx, "Notify-admin").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render admin page: %v", err)
+		h.slog.Error("failed rendering admin users page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

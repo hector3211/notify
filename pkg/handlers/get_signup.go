@@ -1,22 +1,22 @@
 package handlers
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 	"server/middleware"
 	"server/views/templates"
 )
 
-type SingupHandler struct{}
+type SingupHandler struct{ slog *slog.Logger }
 
-func NewSignupHandler() *SingupHandler {
-	return &SingupHandler{}
+func NewSignupHandler(slog *slog.Logger) *SingupHandler {
+	return &SingupHandler{slog: slog}
 }
 
-func (s *SingupHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *SingupHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var isAuth templates.IsAuthenticated
-	_, ok := middleware.GetUserCtxFromCookie(w, r)
-	if ok {
+	userCtx := middleware.GetUserCtxFromCookie(w, r)
+	if userCtx != nil {
 		w.Header().Set("HX-Redirect", "/profile")
 		http.Redirect(w, r, "/profile", http.StatusSeeOther)
 		return
@@ -27,7 +27,7 @@ func (s *SingupHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	page := templates.Signup()
 	err := templates.Layout(page, isAuth, "Notify-signup").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render sing up page: %v", err)
+		h.slog.Error("Failed to render sing up page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

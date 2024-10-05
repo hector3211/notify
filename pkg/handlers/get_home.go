@@ -1,15 +1,15 @@
 package handlers
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 	"server/views/templates"
 )
 
-type HomeHandler struct{}
+type HomeHandler struct{ slog *slog.Logger }
 
-func NewHomeHandler() *HomeHandler {
-	return &HomeHandler{}
+func NewHomeHandler(slog *slog.Logger) *HomeHandler {
+	return &HomeHandler{slog: slog}
 }
 
 func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -17,7 +17,7 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	page := templates.Home()
 	err := templates.Layout(page, isAuth, "Notify").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to home page: %v", err)
+		h.slog.Error("Failed to home page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

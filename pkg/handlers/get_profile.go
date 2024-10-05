@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/middleware"
 	"server/models"
@@ -11,17 +11,18 @@ import (
 )
 
 type ProfileHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewProfileHandler(db *sql.DB) *ProfileHandler {
-	return &ProfileHandler{db: db}
+func NewProfileHandler(db *sql.DB, slog *slog.Logger) *ProfileHandler {
+	return &ProfileHandler{db: db, slog: slog}
 }
 
 func (h *ProfileHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var isAuth templates.IsAuthenticated
-	userCtx, ok := middleware.GetUserCtx(r)
-	if !ok || userCtx == nil {
+	userCtx := middleware.GetUserCtx(r)
+	if userCtx == nil {
 		w.Header().Set("HX-Redirect", "/")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
@@ -33,14 +34,14 @@ func (h *ProfileHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	invoiceService := service.NewInvoiceService(h.db)
+	invoiceService := service.NewInvoiceService(h.db, h.slog)
 	jobs := invoiceService.GetUserInvoices(userCtx.ID)
 
 	isAuth = true
 	page := templates.Profile(jobs)
 	err := templates.Layout(page, isAuth, "Notify-profile").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render profile page: %v", err)
+		h.slog.Error("Failed to render profile page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

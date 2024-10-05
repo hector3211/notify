@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/models"
 	"server/pkg/jwt"
@@ -13,11 +13,12 @@ import (
 )
 
 type PostSignUpHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewPostSignupHandler(db *sql.DB) *PostSignUpHandler {
-	return &PostSignUpHandler{db: db}
+func NewPostSignupHandler(db *sql.DB, slog *slog.Logger) *PostSignUpHandler {
+	return &PostSignUpHandler{db: db, slog: slog}
 }
 
 func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -26,8 +27,8 @@ func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	signupEmail := r.FormValue("email")
 	signupPassword := r.FormValue("password")
 
-	log.Printf("signup email: %s\n", signupEmail)
-	log.Printf("signup password: %s\n", signupPassword)
+	h.slog.Info("signup email: %s\n", signupEmail)
+	h.slog.Info("signup password: %s\n", signupPassword)
 
 	userService := service.NewUserService(h.db)
 	if userService.CheckEmailExists(strings.TrimSpace(signupEmail)) {

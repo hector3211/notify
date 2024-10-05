@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/models"
 	"server/pkg/service"
@@ -11,10 +11,11 @@ import (
 )
 
 type SearchUserHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewPostSearchUserHandler(db *sql.DB) *SearchUserHandler {
+func NewPostSearchUserHandler(db *sql.DB, slog *slog.Logger) *SearchUserHandler {
 	return &SearchUserHandler{db: db}
 }
 
@@ -23,10 +24,10 @@ func (h *SearchUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	invoiceService := service.NewUserService(h.db)
+	userService := service.NewUserService(h.db)
 	query := r.FormValue("user-query")
 
-	allUsers := invoiceService.GetAllUsers()
+	allUsers := userService.GetAllUsers()
 	var filteredResults []models.User
 
 	for _, res := range allUsers {
@@ -38,7 +39,7 @@ func (h *SearchUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	err := templates.UserSearch(filteredResults).Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render admin page: %v", err)
+		h.slog.Error("failed rendering admin page:" + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

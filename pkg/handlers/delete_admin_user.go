@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/models"
 	"server/pkg/service"
@@ -12,13 +12,12 @@ import (
 )
 
 type DeleteAdminUserHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewDeleteAdminUserHandler(db *sql.DB) *DeleteAdminUserHandler {
-	return &DeleteAdminUserHandler{
-		db: db,
-	}
+func NewDeleteAdminUserHandler(db *sql.DB, slog *slog.Logger) *DeleteAdminUserHandler {
+	return &DeleteAdminUserHandler{db: db, slog: slog}
 }
 
 func (h *DeleteAdminUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -27,14 +26,14 @@ func (h *DeleteAdminUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 
 	err := userService.DeleteUser(userID)
 	if err != nil {
-		log.Printf("failed deleting user: %v", err)
+		h.slog.Error("failed deleting user: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	err = templates.Toast(models.SuccessNotification, "Successfully deleted user!").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to Toaster: %v", err)
+		h.slog.Error("failed to toaster up: " + err.Error())
 		return
 	}
 

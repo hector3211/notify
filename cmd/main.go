@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	mware "server/middleware"
+	notifyMiddleware "server/middleware"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -41,9 +43,11 @@ func main() {
 		log.Fatalf("failed database ping! %v", err)
 	}
 
+	slogger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+
 	app.Use(
 		middleware.Logger,
-		mware.Middleware,
+		notifyMiddleware.Middleware,
 	)
 
 	filerServer := http.FileServer(http.Dir("./public"))
@@ -52,32 +56,32 @@ func main() {
 	app.Group(func(r chi.Router) {
 		app.NotFound(handlers.NewNotFoundHanlder().ServeHTTP)
 		// public
-		app.Get("/", handlers.NewHomeHandler().ServeHTTP)
-		app.Get("/login", handlers.NewLoginHanlder().ServeHTTP)
-		app.Get("/signup", handlers.NewSignupHandler().ServeHTTP)
-		app.Get("/profile", handlers.NewProfileHandler(db).ServeHTTP)
+		app.Get("/", handlers.NewHomeHandler(slogger).ServeHTTP)
+		app.Get("/login", handlers.NewLoginHanlder(slogger).ServeHTTP)
+		app.Get("/signup", handlers.NewSignupHandler(slogger).ServeHTTP)
+		app.Get("/profile", handlers.NewProfileHandler(db, slogger).ServeHTTP)
 		// public forms
-		app.Post("/login", handlers.NewPostLoginHandler(db).ServeHTTP)
-		app.Post("/signup", handlers.NewPostSignupHandler(db).ServeHTTP)
+		app.Post("/login", handlers.NewPostLoginHandler(db, slogger).ServeHTTP)
+		app.Post("/signup", handlers.NewPostSignupHandler(db, slogger).ServeHTTP)
 		app.Post("/logout", handlers.NewPostLogOutHandler().ServeHTTP)
 		// user profile
-		app.Get("/jobs", handlers.NewGetJobHandler(db).ServeHTTP)
+		app.Get("/jobs", handlers.NewGetJobHandler(db, slogger).ServeHTTP)
 
 		// admin
-		app.Get("/admin", handlers.NewAdminHandler(db).ServeHTTP)
-		app.Get("/admin/jobs", handlers.NewAdminJobHandler(db).ServeHTTP)
-		app.Post("/admin/jobs", handlers.NewPostSearchJobHandler(db).ServeHTTP)
-		app.Delete("/admin/jobs/{id}", handlers.NewDeleteAdminJobHandler(db).ServeHTTP)
-		app.Get("/admin/users", handlers.NewAdminUserHandler(db).ServeHTTP)
-		app.Post("/admin/users", handlers.NewPostSearchUserHandler(db).ServeHTTP)
-		app.Delete("/admin/users/{id}", handlers.NewDeleteAdminUserHandler(db).ServeHTTP)
+		app.Get("/admin", handlers.NewAdminHandler(db, slogger).ServeHTTP)
+		app.Get("/admin/jobs", handlers.NewAdminJobHandler(db, slogger).ServeHTTP)
+		app.Post("/admin/jobs", handlers.NewPostSearchJobHandler(db, slogger).ServeHTTP)
+		app.Delete("/admin/jobs/{id}", handlers.NewDeleteAdminJobHandler(db, slogger).ServeHTTP)
+		app.Get("/admin/users", handlers.NewAdminUserHandler(db, slogger).ServeHTTP)
+		app.Post("/admin/users", handlers.NewPostSearchUserHandler(db, slogger).ServeHTTP)
+		app.Delete("/admin/users/{id}", handlers.NewDeleteAdminUserHandler(db, slogger).ServeHTTP)
 		// admin forms
-		app.Get("/admin/jobs/new", handlers.NewGetAdminCreateJobHandler(db).ServeHTTP)
-		app.Post("/admin/jobs/new", handlers.NewPostAdminCreateJobHandler(db).ServeHTTP)
-		app.Get("/admin/jobs/edit/{id}", handlers.NewGetAdminJobEditHandler(db).ServeHTTP)
-		app.Put("/admin/jobs/edit/{id}", handlers.NewPutAdminJobEditHandler(db).ServeHTTP)
-		app.Get("/admin/users/new", handlers.NewGetAdminCreateUserHandler(db).ServeHTTP)
-		app.Post("/admin/users/new", handlers.NewPostAdminCreateUserHandler(db).ServeHTTP)
+		app.Get("/admin/jobs/new", handlers.NewGetAdminCreateJobHandler(db, slogger).ServeHTTP)
+		app.Post("/admin/jobs/new", handlers.NewPostAdminCreateJobHandler(db, slogger).ServeHTTP)
+		app.Get("/admin/jobs/edit/{id}", handlers.NewGetAdminJobEditHandler(db, slogger).ServeHTTP)
+		app.Put("/admin/jobs/edit/{id}", handlers.NewPutAdminJobEditHandler(db, slogger).ServeHTTP)
+		app.Get("/admin/users/new", handlers.NewGetAdminCreateUserHandler(db, slogger).ServeHTTP)
+		app.Post("/admin/users/new", handlers.NewPostAdminCreateUserHandler(db, slogger).ServeHTTP)
 		// app.Get("/admin/users/edit/{id}", handlers.NewGetAdminUserEditHandler(db).ServeHTTP)
 		// app.Put("/admin/users/edit/{id}", handlers.NewPutAdminUserEditHandler(db).ServeHTTP)
 	})
@@ -95,9 +99,10 @@ func main() {
 
 	// start server in groutine
 	go func() {
-		log.Printf("Started server on port %s", port)
+		// slogger.Info("Started server on port %s", port)
+		slogger.Info(fmt.Sprintf("Started sever on port %s", port))
 		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatalf("ListenAndServe(): %v", err)
+			slogger.Error(fmt.Sprintf("ListenAndServe() :%v", err))
 			os.Exit(1)
 		}
 	}()
@@ -111,8 +116,8 @@ func main() {
 	defer cancel()
 
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("Server shutdown failed %v", err.Error())
+		slogger.Error(fmt.Sprintf("sever shutdown failed: %v", err))
 		os.Exit(1)
 	}
-	log.Println("Sever shutdown complete")
+	slogger.Info("Sever shutdown complete")
 }

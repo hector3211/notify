@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/models"
 	"server/pkg/service"
@@ -11,11 +11,12 @@ import (
 )
 
 type PostAdminCreateUserHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewPostAdminCreateUserHandler(db *sql.DB) *PostAdminCreateUserHandler {
-	return &PostAdminCreateUserHandler{db: db}
+func NewPostAdminCreateUserHandler(db *sql.DB, slog *slog.Logger) *PostAdminCreateUserHandler {
+	return &PostAdminCreateUserHandler{db: db, slog: slog}
 }
 
 func (h *PostAdminCreateUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +49,7 @@ func (h *PostAdminCreateUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Re
 
 	err := templates.Toast(models.SuccessNotification, "Successfully created user!").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to Toaster: %v", err)
+		h.slog.Error("Failed to Toaster: " + err.Error())
 		return
 	}
 

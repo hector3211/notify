@@ -3,7 +3,7 @@ package service
 import (
 	"database/sql"
 	"fmt"
-	"log"
+	"log/slog"
 	"server/models"
 	"strconv"
 
@@ -11,13 +11,12 @@ import (
 )
 
 type InvoiceService struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewInvoiceService(db *sql.DB) *InvoiceService {
-	return &InvoiceService{
-		db: db,
-	}
+func NewInvoiceService(db *sql.DB, slog *slog.Logger) *InvoiceService {
+	return &InvoiceService{db: db, slog: slog}
 }
 
 func (i InvoiceService) UpdateInvoiceStatus(newStatus models.JobStatus, invoiceId string) error {
@@ -67,7 +66,7 @@ func (i InvoiceService) DeleteInvoice(invoiceIDStr string) error {
 		Where(shogun.Equal("id", invID))
 	// query := "DELETE FROM invoices WHERE id = ?"
 
-	fmt.Println(query.String())
+	// fmt.Println(query.String())
 
 	_, err = i.db.Exec(query.Build())
 	if err != nil {
@@ -126,7 +125,7 @@ func (i InvoiceService) GetInvoice(invoiceId string) *models.Invoice {
 	var invoice models.Invoice
 	invID, err := strconv.Atoi(invoiceId)
 	if err != nil {
-		log.Println(err)
+		slog.Error(err.Error())
 		return nil
 	}
 
@@ -137,7 +136,7 @@ func (i InvoiceService) GetInvoice(invoiceId string) *models.Invoice {
 
 	err = i.db.QueryRow(query.Build()).Scan(&invoice.ID, &invoice.UserId, &invoice.Invoice, &invoice.Status, &invoice.CreatedAt)
 	if err != nil {
-		log.Println(err)
+		slog.Error(err.Error())
 		return nil
 	}
 

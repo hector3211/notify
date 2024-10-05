@@ -2,24 +2,25 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/middleware"
 	"server/views/templates"
 )
 
 type GetAdminCreateJobHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewGetAdminCreateJobHandler(db *sql.DB) *GetAdminCreateJobHandler {
-	return &GetAdminCreateJobHandler{db: db}
+func NewGetAdminCreateJobHandler(db *sql.DB, slog *slog.Logger) *GetAdminCreateJobHandler {
+	return &GetAdminCreateJobHandler{db: db, slog: slog}
 }
 
 func (h *GetAdminCreateJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	userCtx, ok := middleware.GetUserCtx(r)
-	if !ok || userCtx == nil {
-		log.Println("User context not found")
+	userCtx := middleware.GetUserCtx(r)
+	if userCtx == nil {
+		slog.Info("User context not found")
 		w.Header().Set("HX-Redirect", "/")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
@@ -28,7 +29,7 @@ func (h *GetAdminCreateJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Requ
 	page := templates.CreateJobForm()
 	err := templates.Admin(page, *userCtx, "Notify-admin").Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render admin page: %v", err)
+		slog.Error("Failed to render admin page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/pkg/service"
 	"server/views/templates"
@@ -11,27 +11,28 @@ import (
 )
 
 type GetAdminJobEditHandler struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewGetAdminJobEditHandler(db *sql.DB) *GetAdminJobEditHandler {
-	return &GetAdminJobEditHandler{db: db}
+func NewGetAdminJobEditHandler(db *sql.DB, slog *slog.Logger) *GetAdminJobEditHandler {
+	return &GetAdminJobEditHandler{db: db, slog: slog}
 }
 
 func (h *GetAdminJobEditHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	invID := chi.URLParam(r, "id")
-	log.Printf("got job ID:%s", invID)
-	invoiceService := service.NewInvoiceService(h.db)
+	h.slog.Info("got job ID: " + invID)
+	invoiceService := service.NewInvoiceService(h.db, h.slog)
 	invoiceData := invoiceService.GetInvoice(invID)
 	if invoiceData == nil {
-		log.Println("fialed getting invoice data")
+		h.slog.Error("fialed getting invoice data")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	err := templates.AdminEditJobForm(*invoiceData).Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to render admin edit job form page: %v", err)
+		h.slog.Error("Failed to render admin edit job form page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

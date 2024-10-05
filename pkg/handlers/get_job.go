@@ -2,8 +2,7 @@ package handlers
 
 import (
 	"database/sql"
-	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"server/pkg/service"
 	"server/views/templates"
@@ -12,28 +11,29 @@ import (
 )
 
 type JobHander struct {
-	db *sql.DB
+	db   *sql.DB
+	slog *slog.Logger
 }
 
-func NewGetJobHandler(db *sql.DB) *JobHander {
-	return &JobHander{db: db}
+func NewGetJobHandler(db *sql.DB, slog *slog.Logger) *JobHander {
+	return &JobHander{db: db, slog: slog}
 }
 
 func (h *JobHander) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.FormValue("email")
 	userInvoice := r.FormValue("invoice")
 	userService := service.NewUserService(h.db)
-	invoiceService := service.NewInvoiceService(h.db)
+	invoiceService := service.NewInvoiceService(h.db, h.slog)
 
 	if !userService.CheckEmailExists(strings.TrimSpace(userEmail)) {
-		fmt.Printf("No such email exists in db %s", userEmail)
+		h.slog.Info("No such email exists in db: " + userEmail)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	user := userService.GetUserByEmail(userEmail)
 	if user == nil {
-		fmt.Printf("No such user exists in db %s", userEmail)
+		h.slog.Info("No such user exists in db: " + userEmail)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -46,7 +46,7 @@ func (h *JobHander) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	invoiceId := invoiceService.GetInvoiceId(user.ID, InvoiceIdNum)
 	if invoiceId == 0 {
-		fmt.Printf("No such invoice exists in db %s", userInvoice)
+		h.slog.Info("No such invoice exists in db: " + userInvoice)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -54,14 +54,14 @@ func (h *JobHander) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// TODO: fix string to int here
 	invoice := invoiceService.GetInvoice(string(invoiceId))
 	if invoice == nil {
-		fmt.Printf("No such job exists in db with invoice %s", userInvoice)
+		h.slog.Info("No such job exists in db with invoice: " + userInvoice)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	err = templates.Invoice(*invoice).Render(r.Context(), w)
 	if err != nil {
-		log.Printf("Failed to job section: %v", err)
+		h.slog.Error("Failed to job section: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

@@ -36,13 +36,12 @@ var UserKey UserContextKey = "user"
 
 func Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var userCtx *UserContext
 		if !isAuth(r) {
 			next.ServeHTTP(w, r)
 			return
 		}
-		userCtx, ok := GetUserCtxFromCookie(w, r)
-		if !ok {
+		userCtx := GetUserCtxFromCookie(w, r)
+		if userCtx == nil {
 			http.Error(w, "Token parsing error in middlware", http.StatusUnauthorized)
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			log.Println("Error retrieving JWT cookie")
@@ -55,19 +54,19 @@ func Middleware(next http.Handler) http.Handler {
 	})
 }
 
-func GetUserCtx(r *http.Request) (*UserContext, bool) {
+func GetUserCtx(r *http.Request) *UserContext {
 	if user, ok := r.Context().Value(UserKey).(*UserContext); ok && user != nil {
-		return user, true
+		return user
 	}
-	return nil, false
+	return nil
 }
 
-func GetUserCtxFromCookie(w http.ResponseWriter, r *http.Request) (*UserContext, bool) {
+func GetUserCtxFromCookie(w http.ResponseWriter, r *http.Request) *UserContext {
 	// Retrieve JWT cookie
 	jwtCookie, err := r.Cookie("jwt")
 	if err != nil {
 		log.Printf("no JWT cookie: %v", err)
-		return nil, false
+		return nil
 	}
 
 	// Parse JWT token
@@ -79,10 +78,10 @@ func GetUserCtxFromCookie(w http.ResponseWriter, r *http.Request) (*UserContext,
 			if err != nil {
 				if errors.Is(err, jwt.ErrTokenNotEligible) {
 					log.Printf("token not eligible for refresh, continuing with the current token: %v", err)
-					return createUserContext(&jwt.Token{ID: user.ID, Role: user.Role}), true
+					return createUserContext(&jwt.Token{ID: user.ID, Role: user.Role})
 				}
 				log.Printf("failed to refresh token: %v", err)
-				return nil, false
+				return nil
 			}
 			http.SetCookie(w, &http.Cookie{
 				Name:     "jwt",
@@ -97,17 +96,17 @@ func GetUserCtxFromCookie(w http.ResponseWriter, r *http.Request) (*UserContext,
 			user, err = jwt.NewJwtService().ParseFromCookieString(refreshedTokenStr)
 			if err != nil {
 				log.Printf("Error parsing new access token: %v", err)
-				return nil, false
+				return nil
 			}
 		} else {
 			log.Printf("JWT token parsing error: %v", err)
-			return nil, false
+			return nil
 		}
 	}
 
 	// Construct UserContext
 	userCtx := createUserContext(&jwt.Token{ID: user.ID, Role: user.Role})
-	return userCtx, true
+	return userCtx
 }
 
 func GetUserCtxFromHeader(w http.ResponseWriter, r *http.Request) (*UserContext, bool) {
