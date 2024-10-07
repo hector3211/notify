@@ -26,7 +26,7 @@ var port = ":8080"
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("failed loading .env file")
+		panic("failed loading .env file")
 	}
 
 	path := os.Getenv("NOTIFY_DB_PATH")
@@ -34,13 +34,13 @@ func main() {
 
 	db, err := sql.Open("sqlite3", path)
 	if err != nil {
-		log.Fatalf("failed database connection %v", err)
+		panic(fmt.Sprintf("failed database connection: %v", err))
 	}
 	defer db.Close()
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("failed database ping! %v", err)
+		panic(fmt.Sprintf("failed database ping: %v", err))
 	}
 
 	slogger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
