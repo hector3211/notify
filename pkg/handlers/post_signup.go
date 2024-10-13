@@ -8,6 +8,7 @@ import (
 	"server/pkg/jwt"
 	"server/pkg/service"
 	"server/utils"
+	"server/views/templates"
 	"strings"
 	"time"
 )
@@ -27,16 +28,22 @@ func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	signupEmail := r.FormValue("email")
 	signupPassword := r.FormValue("password")
 
-	h.slog.Info("signup email: %s\n", signupEmail)
-	h.slog.Info("signup password: %s\n", signupPassword)
+	// h.slog.Info("signup email: %s\n", signupEmail)
+	// h.slog.Info("signup password: %s\n", signupPassword)
 
 	userService := service.NewUserService(h.db)
 	if userService.CheckEmailExists(strings.TrimSpace(signupEmail)) {
-		http.Error(w, "user with email already exists", http.StatusConflict)
+		h.slog.Info("user with email already exists")
+		err := templates.Toast(models.ErrorNotification, "Email already in use, try another one").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("Failed to Toaster: " + err.Error())
+			return
+		}
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	user := &models.User{
+	newUser := &models.User{
 		FirstName: signupFirstName,
 		LastName:  signupLastName,
 		Password:  signupPassword,
@@ -44,16 +51,27 @@ func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Role:      models.UserRole(models.USER),
 	}
 
-	// NOTE: CreateUser func takes care of hashing the password
-	userRes := userService.CreateUser(user)
+	userRes := userService.CreateUser(newUser)
 	if userRes == nil {
-		http.Error(w, "failed creating new user", http.StatusInternalServerError)
+		h.slog.Info("failed creating new user")
+		err := templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("Failed to Toaster: " + err.Error())
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	token, err := jwt.NewJwtService().Init(userRes.ID, userRes.Role.String())
 	if err != nil {
-		http.Error(w, "failed creating jwt token", http.StatusInternalServerError)
+		h.slog.Info("failed creating new jwt token for new user")
+		err := templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("Failed to Toaster: " + err.Error())
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -68,7 +86,6 @@ func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, cookie)
 
-	// w.Header().Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	w.Header().Set("HX-Redirect", "/profile")
 	w.WriteHeader(http.StatusCreated)
 }

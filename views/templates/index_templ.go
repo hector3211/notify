@@ -44,7 +44,11 @@ func Layout(children templ.Component, isAuth IsAuthenticated, title string) temp
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"/public/styles.css\"><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script></head><body class=\"max-w-7xl conatiner mx-auto min-h-screen\"><main class=\"container mx-auto\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"/public/styles.css\"><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script></head><body class=\"relative container mx-auto max-w-7xl min-h-screen\"><main class=\"container mx-auto\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = navigation(isAuth).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -52,15 +56,11 @@ func Layout(children templ.Component, isAuth IsAuthenticated, title string) temp
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
 		templ_7745c5c3_Err = footer().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -89,17 +89,17 @@ func navigation(isAuth IsAuthenticated) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"\"><div class=\"mx-auto px-8\"><div class=\"relative flex h-16 items-center justify-between\"><div class=\"flex flex-1 items-stretch justify-start space-x-4\"><h1 class=\"sm:text-xl md:text-2xl font-bold\">Notify</h1></div><div class=\"inset-y-0 right-0 items-center pr-2 flex space-x-4\"><a href=\"/\" class=\"bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium\" aria-current=\"page\">Home</a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"container mx-auto absolute top-0\"><div class=\"px-3\"><div class=\"relative flex h-16 items-center justify-between\"><div class=\"flex flex-1 items-stretch justify-start space-x-4\"><h1 class=\"sm:text-xl md:text-2xl font-bold\">Notify</h1></div><div class=\"inset-y-0 right-0 items-center pr-2 flex space-x-4\"><a href=\"/\" class=\"bg-zinc-900 text-white rounded-md px-3 py-2 text-sm font-medium\" aria-current=\"page\">Home</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if isAuth {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/profile\" class=\"bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium\" aria-current=\"page\">Profile</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/profile\" class=\"bg-zinc-900 text-white rounded-md px-3 py-2 text-sm font-medium\" aria-current=\"page\">Profile</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/login\" class=\"bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium\" aria-current=\"page\">Login</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/login\" class=\"bg-zinc-900 text-white rounded-md px-3 py-2 text-sm font-medium\" aria-current=\"page\">Login</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -133,7 +133,7 @@ func footer() templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container p-2 absolute bottom-0 w-full flex justify-between items-center\"><p class=\"text-md font-bold\">Notify</p><div class=\"flex items-center gap-2\"><p>Built by</p><a href=\"https://www.hectororopesa.com\" target=\"_blank\" class=\"font-semibold underline underline-offset-4\">Hector Oropesa</a></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto p-2 absolute z-0 bottom-0 flex justify-between items-center\"><p class=\"text-md font-bold\">Notify</p><div class=\"flex items-center space-x-2\"><p>Built by</p><a href=\"https://www.hectororopesa.com\" target=\"_blank\" class=\"font-semibold underline underline-offset-4\">Hector Oropesa</a></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

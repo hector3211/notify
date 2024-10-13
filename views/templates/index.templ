@@ -16,19 +16,20 @@ templ Layout(children templ.Component, isAuth IsAuthenticated, title string) {
         crossorigin="anonymous"></script>
 </head>
 
-<body class="max-w-7xl conatiner mx-auto min-h-screen">
+<body class="relative container mx-auto max-w-7xl min-h-screen">
     <main class="container mx-auto">
+        @navigation(isAuth)
         @children
+        @footer()
     </main>
-    @footer()
 </body>
 
 </html>
 }
 
 templ navigation(isAuth IsAuthenticated) {
-<nav class="">
-    <div class="mx-auto px-8">
+<nav class="container mx-auto absolute top-0">
+    <div class="px-3">
         <div class="relative flex h-16 items-center justify-between">
             <div class="flex flex-1 items-stretch justify-start space-x-4">
                 <h1 class="sm:text-xl md:text-2xl font-bold">
@@ -36,13 +37,13 @@ templ navigation(isAuth IsAuthenticated) {
                 </h1>
             </div>
             <div class="inset-y-0 right-0 items-center pr-2 flex space-x-4">
-                <a href="/" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                <a href="/" class="bg-zinc-900 text-white rounded-md px-3 py-2 text-sm font-medium"
                     aria-current="page">Home</a>
                 if isAuth {
-                <a href="/profile" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                <a href="/profile" class="bg-zinc-900 text-white rounded-md px-3 py-2 text-sm font-medium"
                     aria-current="page">Profile</a>
                 } else {
-                <a href="/login" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                <a href="/login" class="bg-zinc-900 text-white rounded-md px-3 py-2 text-sm font-medium"
                     aria-current="page">Login</a>
                 }
             </div>
@@ -52,9 +53,9 @@ templ navigation(isAuth IsAuthenticated) {
 }
 
 templ footer() {
-<div class="container p-2 absolute bottom-0 w-full flex justify-between items-center">
+<div class="container mx-auto p-2 absolute z-0 bottom-0 flex justify-between items-center">
     <p class="text-md font-bold">Notify</p>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center space-x-2">
         <p>Built by</p>
         <a href="https://www.hectororopesa.com" target="_blank" class="font-semibold underline underline-offset-4">
             Hector

@@ -31,41 +31,47 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if !userService.CheckEmailExists(strings.TrimSpace(logInEmail)) {
 		h.slog.Info("No such email exists in db: " + logInEmail)
-		w.WriteHeader(http.StatusBadRequest)
-		err := templates.Toast(models.ErrorNotification, "No user found with matching email!").Render(r.Context(), w)
+		err := templates.Toast(models.ErrorNotification, "No user found with matching email").Render(r.Context(), w)
 		if err != nil {
 			h.slog.Error("Failed to Toaster: " + err.Error())
 			return
 		}
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
 	userRes := userService.GetUserByEmail(strings.TrimSpace(logInEmail))
 	if userRes == nil {
 		h.slog.Info("No User found with email: " + logInEmail)
-		http.Error(w, "no user found with that email", http.StatusInternalServerError)
-		err := templates.Toast(models.ErrorNotification, "Oops try again later!").Render(r.Context(), w)
+		err := templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
 		if err != nil {
 			h.slog.Error("Failed to Toaster: " + err.Error())
 			return
 		}
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
 	if !userService.CheckPasswordHash(strings.TrimSpace(logInPassword), userRes.ID) {
 		h.slog.Info("passwords did NOT match with hash")
-		http.Error(w, "Passwords didnt match", http.StatusUnauthorized)
-		err := templates.Toast(models.ErrorNotification, "Invalid password no user found!").Render(r.Context(), w)
+		err := templates.Toast(models.ErrorNotification, "Invalid password no user found").Render(r.Context(), w)
 		if err != nil {
 			h.slog.Error("Failed to Toaster: " + err.Error())
 			return
 		}
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
 	token, err := jwt.NewJwtService().Init(userRes.ID, userRes.Role.String())
 	if err != nil {
-		http.Error(w, "failed creating jwt token", http.StatusInternalServerError)
+		h.slog.Info("failed creating jwt when logging in")
+		err := templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("Failed to Toaster: " + err.Error())
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 

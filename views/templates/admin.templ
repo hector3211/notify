@@ -16,13 +16,11 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
         crossorigin="anonymous"></script>
 </head>
 
-<body class="max-w-7xl container mx-auto min-h-screen">
-    <nav>
-        <div class="mx-auto px-4">
-            <div class="relative flex h-16 items-center justify-between">
-                <div class="flex flex-1 items-stretch justify-start space-x-4">
-                    <a href="/" class="sm:text-xl md:text-2xl font-bold">Notify</a>
-                </div>
+<body class="relative max-w-6xl container mx-auto min-h-screen">
+    <nav class="w-full absolute top-0">
+        <div class="mx-auto lg:px-6">
+            <div class=" flex p-5 items-center justify-between">
+                <a href="/" class="sm:text-xl md:text-2xl font-bold">Notify</a>
                 <div class="inset-y-0 right-0 items-center pr-2 flex space-x-4">
                     <button hx-post="/logout" hx-trigger="click"
                         class="text-white text-sm w-28 bg-zinc-900 font-semibold flex justify-center items-center space-x-2 p-2 px-4 rounded-md">
@@ -39,7 +37,7 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
             </div>
         </div>
     </nav>
-    <main class="max-w-6xl container mx-auto">
+    <main class="max-w-6xl pt-10 container mx-auto">
         <div class="flex flex-col md:flex-row h-screen pt-5">
             <!-- Sidebar -->
             <div class="text-black w-64 md:pr-5 lg:pr-10 p-5">
@@ -76,7 +74,7 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
                         <p>Users</p>
                     </a>
                 </div>
-                <div class="hidden md:flex absolute bottom-5 p-2 items-center space-x-2">
+                <div class="hidden md:flex absolute bottom-10 p-2 items-center space-x-2">
                     <p class="text-md">Role</p>
                     <span class="h-4 w-0.5 bg-gray-500"></span>
                     <p class="font-bold text-lg">{ user.Role.String() }</p>
