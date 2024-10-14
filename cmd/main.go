@@ -24,16 +24,22 @@ var port = ":8080"
 
 func main() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	err := godotenv.Load()
 	if err != nil {
 		panic("failed loading .env file")
 	}
 =======
+=======
+>>>>>>> aceb7cfbeb538908ea3cd0137d4e1efa6f258a18
 	// err := godotenv.Load()
 	// if err != nil {
 	// 	log.Fatal("failed loading .env file")
 	// }
+<<<<<<< HEAD
 >>>>>>> upate:main
+=======
+>>>>>>> aceb7cfbeb538908ea3cd0137d4e1efa6f258a18
 
 	path := os.Getenv("NOTIFY_DB_PATH")
 	app := chi.NewRouter()
