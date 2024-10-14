@@ -22,6 +22,7 @@ func NewGetJobHandler(db *sql.DB, slog *slog.Logger) *JobHander {
 func (h *JobHander) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.FormValue("email")
 	userInvoice := r.FormValue("invoice")
+
 	userService := service.NewUserService(h.db)
 	invoiceService := service.NewInvoiceService(h.db, h.slog)
 

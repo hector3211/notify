@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"server/models"
@@ -27,7 +28,7 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logInPassword := r.FormValue("password")
 	userService := service.NewUserService(h.db)
 
-	// h.slog.Info("login Password: %s\n", logInPassword)
+	h.slog.Info(fmt.Sprintf("login Password: %s", logInPassword))
 
 	if !userService.CheckEmailExists(strings.TrimSpace(logInEmail)) {
 		h.slog.Info("No such email exists in db: " + logInEmail)

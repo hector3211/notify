@@ -28,30 +28,40 @@ func (h *PostAdminCreateUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Re
 
 	userService := service.NewUserService(h.db)
 	if userService.CheckEmailExists(strings.TrimSpace(userEmail)) {
-		http.Error(w, "user with email already exists", http.StatusConflict)
+		h.slog.Info("user email already exists")
+		err := templates.Toast(models.ErrorNotification, "Email already in use, try another one").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("Failed to Toaster: " + err.Error())
+			return
+		}
+		w.WriteHeader(http.StatusConflict)
 		return
 	}
 
 	user := &models.User{
 		FirstName: userFirstName,
 		LastName:  userLastName,
-		Password:  userPassword,
-		Email:     userEmail,
+		Password:  strings.TrimSpace(userPassword),
+		Email:     strings.TrimSpace(userEmail),
 		Role:      models.UserRole(userRole),
 	}
 
-	// NOTE: CreateUser func takes care of hashing the password
 	userRes := userService.CreateUser(user)
 	if userRes == nil {
-		http.Error(w, "failed creating new user", http.StatusInternalServerError)
+		h.slog.Info("user creation failed in admin dashboard")
+		err := templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("Failed to Toaster: " + err.Error())
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	err := templates.Toast(models.SuccessNotification, "Successfully created user!").Render(r.Context(), w)
+	err := templates.Toast(models.SuccessNotification, "Successfully created user").Render(r.Context(), w)
 	if err != nil {
 		h.slog.Error("Failed to Toaster: " + err.Error())
 		return
 	}
-
 	w.WriteHeader(http.StatusCreated)
 }

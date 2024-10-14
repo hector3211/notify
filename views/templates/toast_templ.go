@@ -32,14 +32,14 @@ func Toast(toastType models.Notification, message string) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if toastType == models.SuccessNotification {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"toast\" hx-on::load=\"setTimeout(() =&gt; { this.remove() }, 3000)\" id=\"toaster\" class=\"text-left text-sm fixed z-50 bottom-5 right-5 rounded-lg p-3 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-triangle-alert\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"></path> <path d=\"M12 9v4\"></path> <path d=\"M12 17h.01\"></path></svg><p class=\"font-medium\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"toast\" hx-on::load=\"setTimeout(() =&gt; { this.remove() }, 3000)\" class=\"flex items-center justify-center space-x-2 text-left text-sm fixed z-[1000] bottom-5 right-5 rounded-lg p-5 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-check\"><path d=\"M20 6 9 17l-5-5\"></path></svg><p class=\"font-medium\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(message)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/toast.templ`, Line: 15, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/toast.templ`, Line: 13, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -50,14 +50,14 @@ func Toast(toastType models.Notification, message string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else if toastType == models.InfoNotification {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"toast\" hx-on::load=\"setTimeout(() =&gt; { this.remove() }, 3000)\" id=\"toaster\" class=\"text-left text-sm fixed z-50 bottom-5 right-5 rounded-lg p-3 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-triangle-alert\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"></path> <path d=\"M12 9v4\"></path> <path d=\"M12 17h.01\"></path></svg><p class=\"font-medium\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"toast\" hx-on::load=\"setTimeout(() =&gt; { this.remove() }, 3000)\" class=\"flex items-center justify-center space-x-2 text-left text-sm fixed z-[1000] bottom-5 right-5 rounded-lg p-5 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-triangle-alert\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"></path> <path d=\"M12 9v4\"></path> <path d=\"M12 17h.01\"></path></svg><p class=\"font-medium\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(message)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/toast.templ`, Line: 26, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/toast.templ`, Line: 24, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -68,14 +68,14 @@ func Toast(toastType models.Notification, message string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"toast\" hx-on::load=\"setTimeout(() =&gt; { this.remove() }, 3000)\" id=\"toaster\" class=\"flex items-center justify-center space-x-2 text-left text-sm fixed z-50 bottom-5 right-5 rounded-lg p-5 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-alert\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle> <line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"></line> <line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"></line></svg><p class=\"font-medium\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"toast\" hx-on::load=\"setTimeout(() =&gt; { this.remove() }, 3000)\" class=\"flex items-center justify-center space-x-2 text-left text-sm fixed z-[1000] bottom-5 right-5 rounded-lg p-5 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-circle-alert\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle> <line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"></line> <line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"></line></svg><p class=\"font-medium\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(message)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/toast.templ`, Line: 37, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/toast.templ`, Line: 35, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
