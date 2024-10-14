@@ -4,7 +4,6 @@ import "server/models"
 
 templ Toast(toastType models.Notification, message string) {
 if toastType == models.SuccessNotification {
-<<<<<<< HEAD
 <div id="toast" hx-on::load="setTimeout(() => { this.remove() }, 3000)" id="toaster"
     class="text-left text-sm fixed z-50 bottom-5 right-5 rounded-lg p-3 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -35,20 +34,6 @@ if toastType == models.SuccessNotification {
         <line x1="12" x2="12" y1="8" y2="12"></line>
         <line x1="12" x2="12.01" y1="16" y2="16"></line>
     </svg>
-=======
-<div hx-on::load="setTimeout(() => { this.remove() }, 2000)" id="toaster"
-    class="text-left fixed z-50 bottom-5 right-5 rounded-lg p-3 px-2 border border-emerald-500 bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
-    <p class="font-medium">{ message }</p>
-</div>
-} else if toastType == models.InfoNotification {
-<div hx-on::load="setTimeout(() => { this.remove() }, 2000)" id="toaster"
-    class="text-left fixed z-50 bottom-5 -right-5 rounded-lg p-5 px-2 border border-sky-400 bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
-    <p class="font-medium">{ message }</p>
-</div>
-} else {
-<div hx-on::load="setTimeout(() => { this.remove() }, 2000)" id="toaster"
-    class="text-left fixed z-50 bottom-5 right-5 rounded-lg p-5 px-2 border border-rose-400 bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
->>>>>>> aceb7cfbeb538908ea3cd0137d4e1efa6f258a18
     <p class="font-medium">{ message }</p>
 </div>
 }
