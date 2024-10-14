@@ -170,8 +170,8 @@ func isAuth(r *http.Request) bool {
 
 func createUserContext(user *jwt.Token) *UserContext {
 	return &UserContext{
-		ID: user.ID,
-		// TODO: CHANGE THIS BACK TO NORMAL
-		Role: models.UserRole(models.ADMIN.String()), // Change back to dynamic role if necessary
+		ID:   user.ID,
+		Role: user.Role,
+		// Role: models.ADMIN,
 	}
 }

@@ -46,8 +46,8 @@ func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	newUser := &models.User{
 		FirstName: signupFirstName,
 		LastName:  signupLastName,
-		Password:  signupPassword,
-		Email:     signupEmail,
+		Password:  strings.TrimSpace(signupPassword),
+		Email:     strings.TrimSpace(signupEmail),
 		Role:      models.UserRole(models.USER),
 	}
 

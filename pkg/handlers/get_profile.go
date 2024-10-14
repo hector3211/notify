@@ -24,7 +24,7 @@ func (h *ProfileHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	userCtx := middleware.GetUserCtx(r)
 	if userCtx == nil {
 		w.Header().Set("HX-Redirect", "/")
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusUnauthorized)
 		return
 	}
 

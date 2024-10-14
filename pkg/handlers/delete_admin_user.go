@@ -31,7 +31,7 @@ func (h *DeleteAdminUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	err = templates.Toast(models.SuccessNotification, "Successfully deleted user!").Render(r.Context(), w)
+	err = templates.Toast(models.SuccessNotification, "Successfully deleted user").Render(r.Context(), w)
 	if err != nil {
 		h.slog.Error("failed to toaster up: " + err.Error())
 		return
