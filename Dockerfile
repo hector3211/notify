@@ -19,13 +19,6 @@ RUN CGO_ENABLED=0 go build -o server ./cmd/main.go
 # copy compiled binary
 # COPY --from=builder /app/server ./server
 
-# copy css styles from public/
-# COPY --from=builder /app/public/ /app/public/ 
-
-# Copy your SQLite database file in fly.io volume
-# COPY  mydb.db /data/mydb.db
-# COPY --from=builder /app/mydb.db /data/mydb.db
-
 # Set the path for the SQLite database (inside fly.io volume)
 # Assuming your app references this path for the SQLite database
 ENV NOTIFY_DB_PATH=/data/mydb.db

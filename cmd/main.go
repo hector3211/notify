@@ -42,16 +42,16 @@ func main() {
 		panic(fmt.Sprintf("failed database ping: %v", err))
 	}
 
-	// SQL query to alter the invoices table
-	query := `ALTER TABLE invoices ADD COLUMN install_date TEXT;`
-	// Execute the query
-	_, err = db.Exec(query)
-	if err != nil {
-		fmt.Println("Error executing ALTER TABLE:", err)
-		return
-	} else {
-		fmt.Println("added column to db")
-	}
+	// // SQL query to alter the invoices table
+	// query := `ALTER TABLE invoices ADD COLUMN install_date TEXT;`
+	// // Execute the query
+	// _, err = db.Exec(query)
+	// if err != nil {
+	// 	fmt.Println("Error executing ALTER TABLE:", err)
+	// 	return
+	// } else {
+	// 	fmt.Println("added column to db")
+	// }
 
 	slogger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
