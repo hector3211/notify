@@ -170,8 +170,7 @@ func isAuth(r *http.Request) bool {
 
 func createUserContext(user *jwt.Token) *UserContext {
 	return &UserContext{
-		ID: user.ID,
-		// Role: user.Role,
-		Role: models.ADMIN,
+		ID:   user.ID,
+		Role: user.Role,
 	}
 }
