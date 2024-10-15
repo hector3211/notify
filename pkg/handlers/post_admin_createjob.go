@@ -66,7 +66,7 @@ func (h *PostAdminCreateJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Req
 	invoiceService := service.NewInvoiceService(h.db, h.slog)
 	err = invoiceService.CreateInvoice(userId, formInvoiceNumber, parsedDate.Format("01-02-2006"))
 	if err != nil {
-		h.slog.Error("failed creating new invoice")
+		h.slog.Error("failed creating new invoice: " + err.Error())
 		err = templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
