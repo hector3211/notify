@@ -56,9 +56,10 @@ func MatchJobStatus(s string) JobStatus {
 }
 
 type Invoice struct {
-	ID        int       `json:"id"`
-	UserId    int       `json:"user_id"`
-	Invoice   string    `json:"invoice"`
-	Status    JobStatus `json:"status"`
-	CreatedAt time.Time `json:"created_at"`
+	ID          int       `json:"id"`
+	UserId      int       `json:"user_id"`
+	Invoice     string    `json:"invoice"`
+	Status      JobStatus `json:"status"`
+	InstallDate string    `json:"install_date"`
+	CreatedAt   time.Time `json:"created_at"`
 }

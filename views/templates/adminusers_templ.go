@@ -139,7 +139,7 @@ func UserTable(currUser middleware.UserContext, users []models.User) templ.Compo
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"admin-user-table\" class=\"mt-10\"><table class=\"table-auto container bg-white shadow-md rounded-lg overflow-hidden\"><thead class=\"bg-gray-100 text-gray-600 uppercase text-sm leading-normal\"><tr><th class=\"py-3 px-6 text-left\">Name</th><th class=\"py-3 px-6 text-left\">ID</th><th class=\"py-3 px-6 text-left\">Email</th><th class=\"py-3 px-6 text-center\">Role</th><th class=\"py-3 px-6 text-center\">Actions</th></tr></thead> <tbody id=\"admin-user-table-body\" hx-confirm=\"Are you sure?\" hx-target=\"closest tr\" hx-swap=\"outerHTML\" class=\"text-gray-600 text-sm font-light\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"admin-user-table\" class=\"mt-10 overflow-auto\"><table class=\"table-auto container bg-white shadow-md rounded-lg\"><thead class=\"bg-gray-100 text-gray-600 uppercase text-sm leading-normal\"><tr><th class=\"py-3 px-6 text-left\">Name</th><th class=\"py-3 px-6 text-left\">ID</th><th class=\"py-3 px-6 text-left\">Email</th><th class=\"py-3 px-6 text-center\">Role</th><th class=\"py-3 px-6 text-center\">Actions</th></tr></thead> <tbody id=\"admin-user-table-body\" hx-confirm=\"Are you sure?\" hx-target=\"closest tr\" hx-swap=\"outerHTML\" class=\"text-gray-600 text-sm font-light\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -228,7 +228,7 @@ func UserRow(user models.User) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var9 = []any{templ.KV("bg-zinc-900 text-zinc-100", user.Role.String() == "admin"), templ.KV("bg-neutral-200 text-neutral-600", user.Role.String() != "admin"), "py-1 px-3 rounded-full text-xs"}
+		var templ_7745c5c3_Var9 = []any{templ.KV("bg-zinc-900 text-zinc-100", user.Role.String() == "admin"), templ.KV("bg-neutral-200 text-neutral-600", user.Role.String() != "admin"), "py-1 px-3 rounded-full text-xs font-medium"}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var9...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -253,7 +253,7 @@ func UserRow(user models.User) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(user.Role.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminusers.templ`, Line: 112, Col: 214}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminusers.templ`, Line: 112, Col: 226}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {

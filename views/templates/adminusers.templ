@@ -62,8 +62,8 @@ templ UserSeach() {
 }
 
 templ UserTable(currUser middleware.UserContext, users []models.User) {
-	<div id="admin-user-table" class="mt-10">
-		<table class="table-auto container bg-white shadow-md rounded-lg overflow-hidden">
+	<div id="admin-user-table" class="mt-10 overflow-auto">
+		<table class="table-auto container bg-white shadow-md rounded-lg">
 			<thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
 				<tr>
 					<th class="py-3 px-6 text-left">Name</th>
@@ -109,7 +109,7 @@ templ UserRow(user models.User) {
 			<span>{ user.Email }</span>
 		</td>
 		<td class="py-3 px-6 text-center">
-			<span class={templ.KV("bg-zinc-900 text-zinc-100", user.Role.String() == "admin"),templ.KV("bg-neutral-200 text-neutral-600", user.Role.String() != "admin"),"py-1 px-3 rounded-full text-xs"}>{ user.Role.String() }</span>
+			<span class={templ.KV("bg-zinc-900 text-zinc-100", user.Role.String() == "admin"),templ.KV("bg-neutral-200 text-neutral-600", user.Role.String() != "admin"),"py-1 px-3 rounded-full text-xs font-medium"}>{ user.Role.String() }</span>
 		</td>
 		<td class="py-3 px-6 text-center">
 			<div class="flex item-center justify-center space-x-3">
