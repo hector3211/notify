@@ -43,6 +43,7 @@ func main() {
 		panic(fmt.Sprintf("failed database ping: %v", err))
 	}
 
+	// logger
 	slogger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 	app.Use(
