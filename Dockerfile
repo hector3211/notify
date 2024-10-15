@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -20,7 +20,7 @@ FROM alpine:latest
 COPY --from=builder /app/server ./server
 
 # Copy your SQLite database file in fly.io volume
-# COPY mydb.db /data/mydb.db
+# COPY --from=builder /app/mydb.db /data/mydb.db
 
 # Set the path for the SQLite database (inside fly.io volume)
 # Assuming your app references this path for the SQLite database
