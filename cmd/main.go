@@ -42,6 +42,12 @@ func main() {
 		panic(fmt.Sprintf("failed database ping: %v", err))
 	}
 
+	_, err = db.Exec("ALTER TABLE invoices ADD COLUMN install_date TEXT;")
+	if err != nil {
+		fmt.Println("failed adding install_date column to db")
+		return
+	}
+
 	slogger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 	app.Use(
