@@ -19,6 +19,9 @@ FROM alpine:latest
 # copy compiled binary
 COPY --from=builder /app/server ./server
 
+# copy css styles from public/
+COPY --from=builder /app/public/ /app/public/ 
+
 # Copy your SQLite database file in fly.io volume
 # COPY  mydb.db /data/mydb.db
 # COPY --from=builder /app/mydb.db /data/mydb.db
