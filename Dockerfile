@@ -14,13 +14,13 @@ COPY . .
 RUN CGO_ENABLED=0 go build -o server ./cmd/main.go
 
 # Stage 2
-FROM alpine:latest
+# FROM alpine:latest
 
 # copy compiled binary
-COPY --from=builder /app/server ./server
+# COPY --from=builder /app/server ./server
 
 # copy css styles from public/
-COPY --from=builder /app/public/ /app/public/ 
+# COPY --from=builder /app/public/ /app/public/ 
 
 # Copy your SQLite database file in fly.io volume
 # COPY  mydb.db /data/mydb.db
