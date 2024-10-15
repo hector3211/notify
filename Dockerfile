@@ -14,14 +14,10 @@ COPY . .
 RUN CGO_ENABLED=0 go build -o server ./cmd/main.go
 
 # Stage 2
-FROM alpine:latest
+# FROM alpine:latest
 
 # copy compiled binary
-COPY --from=builder /app/server ./server
-
-# Copy your SQLite database file in fly.io volume
-# COPY  mydb.db /data/mydb.db
-# COPY --from=builder /app/mydb.db /data/mydb.db
+# COPY --from=builder /app/server ./server
 
 # Set the path for the SQLite database (inside fly.io volume)
 # Assuming your app references this path for the SQLite database
