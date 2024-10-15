@@ -38,7 +38,7 @@ func (h *ProfileHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	jobs := invoiceService.GetUserInvoices(userCtx.ID)
 
 	isAuth = true
-	page := templates.Profile(jobs)
+	page := templates.Profile(*userCtx, jobs)
 	err := templates.Layout(page, isAuth, "Notify-profile").Render(r.Context(), w)
 	if err != nil {
 		h.slog.Error("Failed to render profile page: " + err.Error())

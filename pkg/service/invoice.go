@@ -149,7 +149,8 @@ func (i InvoiceService) GetUserInvoices(userId int) []models.Invoice {
 	query := shogun.
 		Select("id", "user_id", "invoice", "status", "created_at").
 		From("invoices").
-		Where(shogun.Equal("user_id", userId))
+		Where(shogun.Equal("user_id", userId)).
+		OrderBy("created_at").Desc()
 
 	rows, err := i.db.Query(query.Build())
 	if err != nil {
