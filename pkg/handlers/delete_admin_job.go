@@ -27,11 +27,16 @@ func (h *DeleteAdminJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 	err := invoiceService.DeleteInvoice(jobID)
 	if err != nil {
 		h.slog.Error("failed deleteing job: " + err.Error())
+		err = templates.Toast(models.SuccessNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("failed to toaster up: " + err.Error())
+			return
+		}
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	err = templates.Toast(models.SuccessNotification, "Successfully deleted job!").Render(r.Context(), w)
+	err = templates.Toast(models.SuccessNotification, "Successfully deleted job").Render(r.Context(), w)
 	if err != nil {
 		h.slog.Error("failed to toaster up: " + err.Error())
 		return

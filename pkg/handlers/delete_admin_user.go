@@ -27,6 +27,11 @@ func (h *DeleteAdminUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 	err := userService.DeleteUser(userID)
 	if err != nil {
 		h.slog.Error("failed deleting user: " + err.Error())
+		err = templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("failed to toaster up: " + err.Error())
+			return
+		}
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

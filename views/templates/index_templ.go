@@ -89,7 +89,7 @@ func navigation(isAuth IsAuthenticated) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"container mx-auto absolute top-0\"><div class=\"px-3\"><div class=\"relative flex h-16 items-center justify-between\"><div class=\"flex flex-1 items-stretch justify-start space-x-4\"><a href=\"/\" class=\"sm:text-xl md:text-2xl font-bold\">Notify</a></div><div class=\"inset-y-0 right-0 items-center pr-2 flex space-x-2\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"container mx-auto absolute top-0\"><div class=\"px-3\"><div class=\"relative flex items-center justify-between p-2\"><div class=\"flex flex-1 items-stretch justify-start space-x-4\"><a href=\"/\" class=\"text-2xl font-bold\">Notify</a></div><div class=\"inset-y-0 right-0 items-center pr-2 flex space-x-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

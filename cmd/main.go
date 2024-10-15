@@ -17,7 +17,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 var port = ":8080"
@@ -31,7 +31,7 @@ func main() {
 	path := os.Getenv("NOTIFY_DB_PATH")
 	app := chi.NewRouter()
 
-	db, err := sql.Open("sqlite3", path)
+	db, err := sql.Open("sqlite", path)
 	if err != nil {
 		panic(fmt.Sprintf("failed database connection: %v", err))
 	}

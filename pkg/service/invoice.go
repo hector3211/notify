@@ -39,13 +39,14 @@ func (i InvoiceService) UpdateInvoiceStatus(newStatus models.JobStatus, invoiceI
 	return nil
 }
 
-func (i InvoiceService) CreateInvoice(userId int, invoiceNum string) error {
+func (i InvoiceService) CreateInvoice(userId int, invoiceNum, installDate string) error {
 	query := shogun.Insert("invoices").
-		Columns("user_id", "invoice", "status").
+		Columns("user_id", "invoice", "status", "install_date").
 		Values(
 			userId,
 			invoiceNum,
 			models.JOBPENDING.String(),
+			installDate,
 		)
 
 	_, err := i.db.Exec(query.Build())
@@ -97,7 +98,7 @@ func (i InvoiceService) GetAllInvoices() []models.Invoice {
 	var invoices []models.Invoice
 
 	query := shogun.NewSelectBuilder().
-		Select("id", "user_id", "invoice", "status", "created_at").
+		Select("id", "user_id", "invoice", "status", "install_date", "created_at").
 		From("invoices").
 		OrderBy("created_at").Desc()
 
@@ -110,7 +111,7 @@ func (i InvoiceService) GetAllInvoices() []models.Invoice {
 
 	for rows.Next() {
 		var invoice models.Invoice
-		err := rows.Scan(&invoice.ID, &invoice.UserId, &invoice.Invoice, &invoice.Status, &invoice.CreatedAt)
+		err := rows.Scan(&invoice.ID, &invoice.UserId, &invoice.Invoice, &invoice.Status, &invoice.InstallDate, &invoice.CreatedAt)
 		if err != nil {
 			fmt.Printf("failed scanning invoices: %v", err)
 		} else {

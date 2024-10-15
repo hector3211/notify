@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS invoices (
     user_id INTEGER NOT NULL,
     invoice TEXT,
     status TEXT DEFAULT "pending",
-    -- install_date TEXT,
+    install_date TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
