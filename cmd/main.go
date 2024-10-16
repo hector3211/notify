@@ -78,6 +78,7 @@ func main() {
 		app.Delete("/admin/users/{id}", handlers.NewDeleteAdminUserHandler(db, slogger).ServeHTTP)
 		// admin forms
 		app.Get("/admin/jobs/new", handlers.NewGetAdminCreateJobHandler(db, slogger).ServeHTTP)
+		app.Get("/admin/jobs/new/{userid}", handlers.NewGetAdminCreateJobHandler(db, slogger).ServeHTTP)
 		app.Post("/admin/jobs/new", handlers.NewPostAdminCreateJobHandler(db, slogger).ServeHTTP)
 		app.Get("/admin/jobs/edit/{id}", handlers.NewGetAdminJobEditHandler(db, slogger).ServeHTTP)
 		app.Put("/admin/jobs/edit/{id}", handlers.NewPutAdminJobEditHandler(db, slogger).ServeHTTP)

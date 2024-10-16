@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"server/middleware"
 	"server/views/templates"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type GetAdminCreateJobHandler struct {
@@ -18,15 +20,26 @@ func NewGetAdminCreateJobHandler(db *sql.DB, slog *slog.Logger) *GetAdminCreateJ
 }
 
 func (h *GetAdminCreateJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	userCtx := middleware.GetUserCtx(r)
+	paramUserId := chi.URLParam(r, "userid")
+	userCtx := middleware.GetUserCtxFromCookie(w, r)
 	if userCtx == nil {
-		slog.Info("User context not found")
+		h.slog.Info("User context not found")
 		w.Header().Set("HX-Redirect", "/")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	page := templates.CreateJobForm()
+	if paramUserId == "" {
+		page := templates.CreateJobForm("")
+		err := templates.Admin(page, *userCtx, "Notify-admin").Render(r.Context(), w)
+		if err != nil {
+			slog.Error("Failed to render admin page: " + err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+
+	page := templates.CreateJobForm(paramUserId)
 	err := templates.Admin(page, *userCtx, "Notify-admin").Render(r.Context(), w)
 	if err != nil {
 		slog.Error("Failed to render admin page: " + err.Error())
