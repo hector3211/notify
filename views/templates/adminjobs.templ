@@ -65,7 +65,7 @@ templ JobSeach() {
 }
 
 templ AdminJobTable(jobs []models.Invoice) {
-	<div id="admin-job-table" class="mt-10 overflow-auto">
+	<div id="admin-job-table" class="mt-10 overflow-auto p-2">
 		<table class="table-auto container bg-white shadow-md rounded-lg">
 			<thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
 				<tr>
@@ -82,10 +82,13 @@ templ AdminJobTable(jobs []models.Invoice) {
 				hx-confirm="Are you sure?"
 				hx-target="closest tr"
 				hx-swap="outerHTML"
-				class="max-w-full text-gray-600 text-sm font-light"
+				class="max-w-full rounded-md text-gray-600 text-sm font-light"
 			>
 				for _,job := range jobs {
 					@JobRow(job)
+				}
+				if len(jobs) == 0 {
+					@EmptyJobRow()
 				}
 			</tbody>
 		</table>

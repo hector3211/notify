@@ -62,7 +62,7 @@ templ UserSeach() {
 }
 
 templ UserTable(currUser middleware.UserContext, users []models.User) {
-	<div id="admin-user-table" class="mt-10 overflow-auto">
+	<div id="admin-user-table" class="mt-10 overflow-auto p-2">
 		<table class="table-auto container bg-white shadow-md rounded-lg">
 			<thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
 				<tr>
@@ -80,11 +80,10 @@ templ UserTable(currUser middleware.UserContext, users []models.User) {
 				hx-swap="outerHTML"
 				class="text-gray-600 text-sm font-light"
 			>
-				if len(users) > 0 {
-					for _, user := range users {
-						@UserRow(user)
-					}
-				} else {
+                for _, user := range users {
+                    @UserRow(user)
+                }
+                if len(users) == 0 {
 					@EmptyRow()
 				}
 			</tbody>
@@ -112,9 +111,11 @@ templ UserRow(user models.User) {
 			<span class={templ.KV("bg-zinc-900 text-zinc-100", user.Role.String() == "admin"),templ.KV("bg-neutral-200 text-neutral-600", user.Role.String() != "admin"),"py-1 px-3 rounded-full text-xs font-medium"}>{ user.Role.String() }</span>
 		</td>
 		<td class="py-3 px-6 text-center">
-			<div class="flex item-center justify-center space-x-3">
+			<div class=" flex item-center justify-center space-x-3">
 				<button
-					class="w-8 p-2 text-gray-800 rounded-md transition transform hover:bg-white hover:scale-110 hover:cursor-pointer"
+					class="relative w-8 p-2 text-gray-800 rounded-md transition transform hover:bg-white hover:scale-110 hover:cursor-pointer"
+                    hx-swap="outerHTML"
+                    hx-on:click="document.getElementById('user-edit-popup').classList.toggle('hidden');"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -130,6 +131,7 @@ templ UserRow(user models.User) {
 							d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
 						></path>
 					</svg>
+                    @EditPopUp(user.ID)
 				</button>
 				<button
 					hx-delete={ fmt.Sprintf("/admin/users/%d", user.ID) }
@@ -154,6 +156,13 @@ templ UserRow(user models.User) {
 		</td>
 	</tr>
 }
+
+templ EditPopUp(userId int) {
+        <div id="user-edit-popup" class="hidden absolute right-5 z-50 w-36 bg-white text-sm rounded-md border boder-zinc-900">
+                <a href="#" class="block p-1 text-gray-800 hover:bg-gray-100">Edit Item</a>
+                <a href="#" class="block p-1 text-gray-800 hover:bg-gray-100">View Details</a>
+        </div>
+    }
 
 templ EmptyTable() {
 	<table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">

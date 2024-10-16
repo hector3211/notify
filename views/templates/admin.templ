@@ -12,7 +12,7 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 			<link rel="stylesheet" href="/public/styles.css"/>
 			<script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>
 		</head>
-		<body class="relative max-w-7xl container mx-auto min-h-screen">
+		<body class="relative max-w-6xl container mx-auto min-h-screen">
 			<nav class="w-full absolute top-0">
 				<div class="mx-auto lg:px-6">
 					<div class=" flex p-5 items-center justify-between">
@@ -45,10 +45,10 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 					</div>
 				</div>
 			</nav>
-			<main class="max-w-7xl pt-10 container mx-auto">
+			<main class="max-w-6xl pt-10 container mx-auto">
 				<div class="flex flex-col md:flex-row h-screen pt-5">
 					<!-- Sidebar -->
-					<div class="md:w-64 md:pr-5 lg:pr-10 md:p-5">
+					<div class="w-full md:w-52 md:p-5 md:pr-5 lg:w-64 lg:pr-10">
 						<div
 							class="container mx-auto mt-10 font-semibold flex flex-row justify-center space-x-6 md:space-x-0 md:flex-col md:items-start md:justify-start"
 						>
