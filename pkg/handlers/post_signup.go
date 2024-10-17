@@ -23,6 +23,18 @@ func NewPostSignupHandler(db *sql.DB, slog *slog.Logger) *PostSignUpHandler {
 }
 
 func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	honeyPot := r.FormValue("honeypot")
+	if honeyPot != "" {
+		h.slog.Info("honeypot triggered")
+		err := templates.Toast(models.ErrorNotification, "Oops something went wrong, try again later").Render(r.Context(), w)
+		if err != nil {
+			h.slog.Error("Failed to Toaster: " + err.Error())
+			return
+		}
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
 	signupFirstName := r.FormValue("firstname")
 	signupLastName := r.FormValue("lastname")
 	signupEmail := r.FormValue("email")
@@ -84,8 +96,8 @@ func (h *PostSignUpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Secure:   utils.IsProduction(),
 		SameSite: http.SameSiteStrictMode,
 	}
-	http.SetCookie(w, cookie)
 
+	http.SetCookie(w, cookie)
 	w.Header().Set("HX-Redirect", "/profile")
 	w.WriteHeader(http.StatusCreated)
 }

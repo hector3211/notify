@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"server/middleware"
+	"server/models"
 	"server/views/templates"
 
 	"github.com/go-chi/chi/v5"
@@ -26,6 +27,13 @@ func (h *GetAdminCreateJobHandler) ServeHTTP(w http.ResponseWriter, r *http.Requ
 		h.slog.Info("User context not found")
 		w.Header().Set("HX-Redirect", "/")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	if userCtx.Role != models.ADMIN {
+		h.slog.Info("user unauthorized")
+		w.Header().Set("HX-Redirect", "/")
+		http.Redirect(w, r, "/", http.StatusUnauthorized)
 		return
 	}
 
