@@ -43,19 +43,20 @@ func (h *PutAdminJobEditHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	// TODO:
+	// TODO: get user email
+	var userEmail string = ""
 
 	// Send email notification
-	// if models.JobStatus(newStatus) == models.JOBDONE {
-	// 	msg := fmt.Sprintf("Job %s is done!", invID)
-	// 	emailService := service.NewEmailService(h.db, h.slog)
-	// 	go func() {
-	// 		err := emailService.SendEmail(2, , "Job Status", msg)
-	// 		if err != nil {
-	// 			h.slog.Error("failed sending email", "err", err.Error())
-	// 		}
-	// 	}()
-	// }
+	if models.JobStatus(newStatus) == models.JOBDONE {
+		msg := fmt.Sprintf("Job %s is done!", invID)
+		emailService := service.NewEmailService(h.db, h.slog)
+		go func() {
+			err := emailService.SendEmail(2, userEmail, "Job Status", msg)
+			if err != nil {
+				h.slog.Error("failed sending email", "err", err.Error())
+			}
+		}()
+	}
 
 	w.Header().Set("HX-Refresh", "true")
 	w.WriteHeader(http.StatusOK)
