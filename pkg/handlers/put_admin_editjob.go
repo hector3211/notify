@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"database/sql"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -31,32 +30,31 @@ func (h *PutAdminJobEditHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 		http.Redirect(w, r, "/", http.StatusUnauthorized)
 		return
 	}
-
 	invID := chi.URLParam(r, "id")
 	newStatus := r.FormValue("status")
 	invoiceService := service.NewInvoiceService(h.db, h.slog)
 
 	err := invoiceService.UpdateInvoiceStatus(models.JobStatus(newStatus), invID)
 	if err != nil {
-		h.slog.Error(fmt.Sprintf("failed updating inv %s: %v", invID, err))
+		h.slog.Error("failed updating invoice", "ID", invID, "err", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	// Send email notification
-	if models.JobStatus(newStatus) == models.JOBDONE {
-		msg := fmt.Sprintf("Job %s is done!", invID)
-		emailService := service.NewEmailService(h.db, h.slog)
-		userEmail, err := invoiceService.GetUserFromInvoice(invID)
-		if err == nil {
-			go func() {
-				err := emailService.SendEmail(userEmail, "Job Status", msg)
-				if err != nil {
-					h.slog.Error("failed sending email", "err", err.Error())
-				}
-			}()
-		}
-	}
+	// if models.JobStatus(newStatus) == models.JOBDONE {
+	// 	msg := fmt.Sprintf("Job %s is done!", invID)
+	// 	emailService := service.NewEmailService(h.db, h.slog)
+	// 	userEmail, err := invoiceService.GetUserFromInvoice(invID)
+	// 	if err == nil {
+	// 		go func() {
+	// 			err := emailService.SendEmail(userEmail, "Job Status", msg)
+	// 			if err != nil {
+	// 				h.slog.Error("failed sending email", "err", err.Error())
+	// 			}
+	// 		}()
+	// 	}
+	// }
 
 	w.Header().Set("HX-Refresh", "true")
 	w.WriteHeader(http.StatusOK)
