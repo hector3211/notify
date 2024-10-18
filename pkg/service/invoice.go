@@ -19,8 +19,38 @@ func NewInvoiceService(db *sql.DB, slog *slog.Logger) *InvoiceService {
 	return &InvoiceService{db: db, slog: slog}
 }
 
-func (i InvoiceService) UpdateInvoiceStatus(newStatus models.JobStatus, invoiceId string) error {
-	invID, err := strconv.Atoi(invoiceId)
+func (i InvoiceService) GetUserFromInvoice(invoiceID string) (string, error) {
+	invID, err := strconv.Atoi(invoiceID)
+	if err != nil {
+		return "", err
+	}
+
+	query := shogun.
+		Select("user_id").
+		From("invoices").
+		Where(shogun.Equal("id", invID))
+
+	var userID int
+	rows := i.db.QueryRow(query.Build()).Scan(&userID)
+	if rows == nil {
+		return "", err
+	}
+
+	var userEmail string
+	userQuery := shogun.
+		Select("email").
+		From("users").
+		Where(shogun.Equal("id", userID))
+
+	userRows := i.db.QueryRow(userQuery.Build()).Scan(&userEmail)
+	if userRows == nil {
+		return "", err
+	}
+	return userEmail, nil
+}
+
+func (i InvoiceService) UpdateInvoiceStatus(newStatus models.JobStatus, invoiceID string) error {
+	invID, err := strconv.Atoi(invoiceID)
 	if err != nil {
 		return err
 	}
