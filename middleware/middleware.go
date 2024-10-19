@@ -16,6 +16,7 @@ import (
 
 var protectedURLs = []*regexp.Regexp{
 	regexp.MustCompile("^/admin$"),
+	regexp.MustCompile("^/admin/account$"),
 	regexp.MustCompile("^/admin/jobs$"),
 	regexp.MustCompile("^/admin/jobs/new$"),
 	regexp.MustCompile("^/admin/jobs/edit$"),

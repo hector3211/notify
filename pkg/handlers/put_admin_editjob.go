@@ -41,6 +41,8 @@ func (h *PutAdminJobEditHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	// TODO: turn this on
+
 	// Send email notification
 	// if models.JobStatus(newStatus) == models.JOBDONE {
 	// 	msg := fmt.Sprintf("Job %s is done!", invID)

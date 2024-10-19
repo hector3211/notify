@@ -52,7 +52,10 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 						<div
 							class="container mx-auto mt-10 font-semibold flex flex-row justify-center space-x-6 md:space-x-0 md:flex-col md:items-start md:justify-start"
 						>
-							<a href="/admin" class="md:py-2 flex items-end space-x-3">
+							<a
+								href="/admin"
+								class="md:py-2 flex items-center space-x-3 hover:cursor-pointer hover:text-zinc-700"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="24"
@@ -71,7 +74,10 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 								</svg>
 								<p>Overview</p>
 							</a>
-							<a href="/admin/jobs" class="md:py-3  flex items-end space-x-3 hover:cursor-pointer">
+							<a
+								href="/admin/jobs"
+								class="md:py-3  flex items-center space-x-3 hover:cursor-pointer hover:text-zinc-700"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="24"
@@ -91,7 +97,7 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 							</a>
 							<a
 								href="/admin/users"
-								class="md:py-2 flex items-end space-x-3 hover:cursor-pointer hover:scale-105"
+								class="md:py-2 flex items-center space-x-3 hover:cursor-pointer hover:text-zinc-700"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -112,9 +118,11 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 								</svg>
 								<p>Users</p>
 							</a>
+						</div>
+						<div class="hidden md:flex absolute bottom-10 p-2 items-center space-x-2 font-semibold">
 							<a
-								href="/admin/profile"
-								class="md:py-2 flex items-end space-x-3 hover:cursor-pointer hover:scale-105"
+								href="/admin/account"
+								class="md:py-2 flex items-end space-x-3 hover:cursor-pointer hover:text-gray-700"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -131,13 +139,8 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 									<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
 									<circle cx="12" cy="7" r="4"></circle>
 								</svg>
-								<p>Profile</p>
+								<p>Account</p>
 							</a>
-						</div>
-						<div class="hidden md:flex absolute bottom-10 p-2 items-center space-x-2">
-							<p class="text-md">Role</p>
-							<span class="h-4 w-0.5 bg-gray-500"></span>
-							<p class="font-bold text-lg">{ user.Role.String() }</p>
 						</div>
 					</div>
 					<!-- Main container -->

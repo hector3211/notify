@@ -190,7 +190,7 @@ func JobRow(job models.Invoice) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(job.Invoice)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 101, Col: 16}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 101, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -203,7 +203,7 @@ func JobRow(job models.Invoice) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(job.UserId))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 104, Col: 29}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 104, Col: 29}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -216,7 +216,7 @@ func JobRow(job models.Invoice) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(job.CreatedAt.Format("01-02-2006"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 107, Col: 39}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 107, Col: 39}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -229,7 +229,7 @@ func JobRow(job models.Invoice) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(job.InstallDate)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 110, Col: 20}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 110, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -250,7 +250,7 @@ func JobRow(job models.Invoice) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/admin/jobs/edit/%s", strconv.Itoa(job.ID)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 119, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 119, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -263,7 +263,7 @@ func JobRow(job models.Invoice) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/admin/jobs/%d", job.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 139, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 139, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -306,7 +306,7 @@ func StatusBadge(status models.JobStatus) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(status.String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 165, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 165, Col: 20}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -324,7 +324,7 @@ func StatusBadge(status models.JobStatus) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(status.String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 169, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 169, Col: 20}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -342,7 +342,7 @@ func StatusBadge(status models.JobStatus) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(status.String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 173, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 173, Col: 20}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -360,7 +360,7 @@ func StatusBadge(status models.JobStatus) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(status.String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/adminjobs.templ`, Line: 177, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_jobs.templ`, Line: 177, Col: 20}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
