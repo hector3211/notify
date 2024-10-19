@@ -52,7 +52,7 @@ templ UserSeach() {
 			id="user-query"
 			name="user-query"
 			type="search"
-			placeholder="last name"
+			placeholder="Search by last name"
 			hx-post="/admin/users"
 			hx-trigger="input changed delay:500ms, search"
 			hx-target="#admin-user-table-body"
@@ -66,9 +66,10 @@ templ UserTable(currUser middleware.UserContext, users []models.User) {
 		<table class="table-auto container bg-white shadow-md rounded-lg">
 			<thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
 				<tr>
-					<th class="py-3 px-6 text-left">Name</th>
-					<th class="py-3 px-6 text-left">ID</th>
-					<th class="py-3 px-6 text-left">Email</th>
+					<th class="hidden md:inline-block py-3 px-6 text-left"></th>
+                    <th class="py-3 px-6 text-left">ID</th>
+					<th class="py-3 px-6 text-left">Last</th>
+					<th class="hidden md:inline-block py-3 px-6 text-left">Email</th>
 					<th class="py-3 px-6 text-center">Role</th>
 					<th class="py-3 px-6 text-center">Actions</th>
 				</tr>
@@ -93,18 +94,16 @@ templ UserTable(currUser middleware.UserContext, users []models.User) {
 
 templ UserRow(user models.User) {
 	<tr class="border-b border-gray-200 hover:bg-gray-100">
-		<td class="py-3 px-6 text-left whitespace-nowrap">
-			<div class="flex items-center">
-				<div class="mr-2">
-					<img class="w-6 h-6 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt=""/>
-				</div>
-				<span class="font-medium">{ user.LastName }</span>
-			</div>
+		<td class="hidden md:inline-block mx-auto py-3 px-2">
+            <img class="size-6 lg:size-8 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt=""/>
 		</td>
+        <td class="py-3 px-6 text-left">
+        <span>{ strconv.Itoa(user.ID) }</span>
+        </td>
 		<td class="py-3 px-6 text-left">
-			<span>{ strconv.Itoa(user.ID) }</span>
+			<span class="font-medium">{ user.LastName }</span>
 		</td>
-		<td class="py-3 px-6 text-left">
+		<td class="hidden md:inline-block mx-auto py-3 px-2">
 			<span>{ user.Email }</span>
 		</td>
 		<td class="py-3 px-6 text-center">

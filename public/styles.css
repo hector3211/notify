@@ -729,6 +729,11 @@ video {
   height: 2rem;
 }
 
+.size-6 {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .h-24 {
   height: 6rem;
 }
@@ -1154,6 +1159,11 @@ video {
   padding-bottom: 2rem;
 }
 
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
 .pr-2 {
   padding-right: 0.5rem;
 }
@@ -1428,6 +1438,10 @@ video {
 }
 
 @media (min-width: 768px) {
+  .md\:inline-block {
+    display: inline-block;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -1498,6 +1512,11 @@ video {
 @media (min-width: 1024px) {
   .lg\:inline-block {
     display: inline-block;
+  }
+
+  .lg\:size-8 {
+    width: 2rem;
+    height: 2rem;
   }
 
   .lg\:w-1\/2 {

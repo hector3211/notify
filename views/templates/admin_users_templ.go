@@ -110,7 +110,7 @@ func UserSeach() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"admin-user-search\" class=\"flex flex-col gap-2 h-24 my-5\"><label class=\"font-bold text-xl\">Search User</label> <input class=\"border border-stone-500 p-2 rounded-md\" id=\"user-query\" name=\"user-query\" type=\"search\" placeholder=\"last name\" hx-post=\"/admin/users\" hx-trigger=\"input changed delay:500ms, search\" hx-target=\"#admin-user-table-body\" hx-indicator=\".htmx-indicator\"></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"admin-user-search\" class=\"flex flex-col gap-2 h-24 my-5\"><label class=\"font-bold text-xl\">Search User</label> <input class=\"border border-stone-500 p-2 rounded-md\" id=\"user-query\" name=\"user-query\" type=\"search\" placeholder=\"Search by last name\" hx-post=\"/admin/users\" hx-trigger=\"input changed delay:500ms, search\" hx-target=\"#admin-user-table-body\" hx-indicator=\".htmx-indicator\"></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -139,7 +139,7 @@ func UserTable(currUser middleware.UserContext, users []models.User) templ.Compo
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"admin-user-table\" class=\"mt-10 overflow-auto p-2\"><table class=\"table-auto container bg-white shadow-md rounded-lg\"><thead class=\"bg-gray-100 text-gray-600 uppercase text-sm leading-normal\"><tr><th class=\"py-3 px-6 text-left\">Name</th><th class=\"py-3 px-6 text-left\">ID</th><th class=\"py-3 px-6 text-left\">Email</th><th class=\"py-3 px-6 text-center\">Role</th><th class=\"py-3 px-6 text-center\">Actions</th></tr></thead> <tbody id=\"admin-user-table-body\" hx-confirm=\"Are you sure?\" hx-target=\"closest tr\" hx-swap=\"outerHTML\" class=\"text-gray-600 text-sm font-light\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"admin-user-table\" class=\"mt-10 overflow-auto p-2\"><table class=\"table-auto container bg-white shadow-md rounded-lg\"><thead class=\"bg-gray-100 text-gray-600 uppercase text-sm leading-normal\"><tr><th class=\"hidden md:inline-block py-3 px-6 text-left\"></th><th class=\"py-3 px-6 text-left\">ID</th><th class=\"py-3 px-6 text-left\">Last</th><th class=\"hidden md:inline-block py-3 px-6 text-left\">Email</th><th class=\"py-3 px-6 text-center\">Role</th><th class=\"py-3 px-6 text-center\">Actions</th></tr></thead> <tbody id=\"admin-user-table-body\" hx-confirm=\"Are you sure?\" hx-target=\"closest tr\" hx-swap=\"outerHTML\" class=\"text-gray-600 text-sm font-light\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -184,40 +184,40 @@ func UserRow(user models.User) templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<tr class=\"border-b border-gray-200 hover:bg-gray-100\"><td class=\"py-3 px-6 text-left whitespace-nowrap\"><div class=\"flex items-center\"><div class=\"mr-2\"><img class=\"w-6 h-6 rounded-full\" src=\"https://randomuser.me/api/portraits/men/1.jpg\" alt=\"\"></div><span class=\"font-medium\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<tr class=\"border-b border-gray-200 hover:bg-gray-100\"><td class=\"hidden md:inline-block mx-auto py-3 px-2\"><img class=\"size-6 lg:size-8 rounded-full\" src=\"https://randomuser.me/api/portraits/men/1.jpg\" alt=\"\"></td><td class=\"py-3 px-6 text-left\"><span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(user.LastName)
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(user.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 101, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 101, Col: 37}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div></td><td class=\"py-3 px-6 text-left\"><span>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></td><td class=\"py-3 px-6 text-left\"><span class=\"font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(user.ID))
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(user.LastName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 105, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 104, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></td><td class=\"py-3 px-6 text-left\"><span>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></td><td class=\"hidden md:inline-block mx-auto py-3 px-2\"><span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 108, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 107, Col: 21}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -252,7 +252,7 @@ func UserRow(user models.User) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(user.Role.String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 111, Col: 226}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 110, Col: 226}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -279,7 +279,7 @@ func UserRow(user models.User) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/admin/users/%d", user.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 129, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/templates/admin_users.templ`, Line: 128, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
