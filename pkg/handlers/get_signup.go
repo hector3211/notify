@@ -14,7 +14,7 @@ func NewSignupHandler(slog *slog.Logger) *SingupHandler {
 }
 
 func (h *SingupHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var isAuth templates.IsAuthenticated
+	var isAuth templates.IsAuthenticated = false
 	userCtx := middleware.GetUserCtxFromCookie(w, r)
 	if userCtx != nil {
 		w.Header().Set("HX-Redirect", "/profile")
@@ -22,10 +22,9 @@ func (h *SingupHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// log.Printf("userCTX: %+v", userCtx)
-	// Data default
-	isAuth = false
+
 	page := templates.Signup()
-	err := templates.Layout(page, isAuth, "Notify-signup").Render(r.Context(), w)
+	err := templates.Layout(page, isAuth, "signup", "Notify-signup").Render(r.Context(), w)
 	if err != nil {
 		h.slog.Error("Failed to render sing up page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)

@@ -16,7 +16,7 @@ func NewLoginHanlder(slog *slog.Logger) *LoginHandler {
 }
 
 func (h *LoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var isAuth templates.IsAuthenticated
+	var isAuth templates.IsAuthenticated = false
 	userCtx := middleware.GetUserCtxFromCookie(w, r)
 	if userCtx != nil {
 		w.Header().Set("HX-Redirect", "/profile")
@@ -25,10 +25,8 @@ func (h *LoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	// log.Printf("userCTX: %+v", userCtx)
 
-	// Admin default
-	isAuth = false
 	page := templates.Login()
-	err := templates.Layout(page, isAuth, "Notify-login").Render(r.Context(), w)
+	err := templates.Layout(page, isAuth, "login", "Notify-login").Render(r.Context(), w)
 	if err != nil {
 		h.slog.Error("Failed to render login page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)

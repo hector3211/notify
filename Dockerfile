@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine AS builder
+FROM golang:1.23-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -12,12 +12,6 @@ COPY . .
 
 # Build the Go application
 RUN CGO_ENABLED=0 go build -o server ./cmd/main.go
-
-# Stage 2
-# FROM alpine:latest
-
-# copy compiled binary
-# COPY --from=builder /app/server ./server
 
 # Set the path for the SQLite database (inside fly.io volume)
 # Assuming your app references this path for the SQLite database

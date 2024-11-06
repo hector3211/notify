@@ -21,7 +21,7 @@ func (n *NotFoundHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		isAuth = true
 	}
 	page := templates.NotFound()
-	err := templates.Layout(page, isAuth, "Notify").Render(r.Context(), w)
+	err := templates.Layout(page, isAuth, "notfound", "Notify").Render(r.Context(), w)
 	if err != nil {
 		return
 	}

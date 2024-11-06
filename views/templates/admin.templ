@@ -12,7 +12,7 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 			<link rel="stylesheet" href="/public/styles.css"/>
 			<script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>
 		</head>
-		<body class="relative max-w-7xl container mx-auto min-h-screen">
+		<body class="relative max-w-6xl container mx-auto min-h-screen">
 			<nav class="w-full absolute top-0">
 				<div class="mx-auto lg:px-6">
 					<div class=" flex p-5 items-center justify-between">
@@ -45,14 +45,17 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 					</div>
 				</div>
 			</nav>
-			<main class="max-w-7xl pt-10 container mx-auto">
+			<main class="max-w-6xl pt-10 container mx-auto">
 				<div class="flex flex-col md:flex-row h-screen pt-5">
 					<!-- Sidebar -->
-					<div class="md:w-64 md:pr-5 lg:pr-10 md:p-5">
+					<div class="w-full md:w-52 md:p-5 md:pr-5 lg:w-64 lg:pr-10">
 						<div
 							class="container mx-auto mt-10 font-semibold flex flex-row justify-center space-x-6 md:space-x-0 md:flex-col md:items-start md:justify-start"
 						>
-							<a href="/admin" class="md:py-2 md:px-4 flex items-center space-x-3">
+							<a
+								href="/admin"
+								class="md:py-2 flex items-center space-x-3 hover:cursor-pointer hover:text-zinc-700"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="24"
@@ -71,7 +74,10 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 								</svg>
 								<p>Overview</p>
 							</a>
-							<a href="/admin/jobs" class="md:py-3 md:px-4 flex items-center space-x-3 hover:cursor-pointer">
+							<a
+								href="/admin/jobs"
+								class="md:py-3  flex items-center space-x-3 hover:cursor-pointer hover:text-zinc-700"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="24"
@@ -89,7 +95,10 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 								</svg>
 								<p>Jobs</p>
 							</a>
-							<a href="/admin/users" class="md:py-2 md:px-4 flex items-center space-x-3 hover:cursor-pointer">
+							<a
+								href="/admin/users"
+								class="md:py-2 flex items-center space-x-3 hover:cursor-pointer hover:text-zinc-700"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="24"
@@ -110,10 +119,28 @@ templ Admin(children templ.Component, user middleware.UserContext, title string)
 								<p>Users</p>
 							</a>
 						</div>
-						<div class="hidden md:flex absolute bottom-10 p-2 items-center space-x-2">
-							<p class="text-md">Role</p>
-							<span class="h-4 w-0.5 bg-gray-500"></span>
-							<p class="font-bold text-lg">{ user.Role.String() }</p>
+						<div class="hidden md:flex absolute bottom-10 p-2 items-center space-x-2 font-semibold">
+							<a
+								href="/admin/account"
+								class="md:py-2 flex items-end space-x-3 hover:cursor-pointer hover:text-gray-700"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="lucide lucide-user"
+								>
+									<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+									<circle cx="12" cy="7" r="4"></circle>
+								</svg>
+								<p>Account</p>
+							</a>
 						</div>
 					</div>
 					<!-- Main container -->

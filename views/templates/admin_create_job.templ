@@ -1,12 +1,18 @@
 package templates
 
-templ CreateJobForm() {
+templ CreateJobForm(userId string) {
 <form method="POST" hx-post="/admin/jobs/new" hx-trigger="submit" hx-swap="afterend" hx-on::after-request="this.reset()"
     class="mt-5 shadow-sm shadow-stone-300 p-10 rounded-lg">
     <p class="font-bold text-3xl p-6">Create Job</p>
     <div class="flex flex-col gap-2">
+        if userId != "" {
         <label form="customer_id" class="font-semibold text-lg">Customer ID</label>
-        <input class="border border-black p-2 rounded-md" id="id" name="id" type="number" min="1" required />
+        <input id="id" name="id" type="number" min="1" value={ userId } required
+            class="border border-black p-2 rounded-md" />
+        } else {
+        <label form="customer_id" class="font-semibold text-lg">Customer ID</label>
+        <input id="id" name="id" type="number" min="1" required class="border border-black p-2 rounded-md" />
+        }
     </div>
     <div class="flex flex-col gap-2">
         <label for="invoice" class="font-semibold text-lg">Invoice</label>

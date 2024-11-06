@@ -1,0 +1,171 @@
+package templates
+
+import (
+	"fmt"
+	"server/middleware"
+	"server/models"
+	"strconv"
+)
+
+templ AdminUsers(currUser middleware.UserContext, users []models.User) {
+	<div class="container mx-auto px-6 py-8">
+		@CreateUserBtn()
+		@UserSeach()
+		@UserTable(currUser, users)
+	</div>
+}
+
+templ CreateUserBtn() {
+	<a href="users/new">
+		<button
+			class="mt-5 font-semibold text-center  p-2 px-3 rounded-md bg-zinc-900 text-white flex items-center space-x-2"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="lucide lucide-user-plus"
+			>
+				<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+				<circle cx="9" cy="7" r="4"></circle>
+				<line x1="19" x2="19" y1="8" y2="14"></line>
+				<line x1="22" x2="16" y1="11" y2="11"></line>
+			</svg>
+			<p>
+				Create User
+			</p>
+		</button>
+	</a>
+}
+
+templ UserSeach() {
+	<div id="admin-user-search" class="flex flex-col gap-2 h-24 my-5">
+		<label class="font-bold text-xl">Search User</label>
+		<input
+			class="border border-stone-500 p-2 rounded-md"
+			id="user-query"
+			name="user-query"
+			type="search"
+			placeholder="Search by last name"
+			hx-post="/admin/users"
+			hx-trigger="input changed delay:500ms, search"
+			hx-target="#admin-user-table-body"
+			hx-indicator=".htmx-indicator"
+		/>
+	</div>
+}
+
+templ UserTable(currUser middleware.UserContext, users []models.User) {
+	<div id="admin-user-table" class="mt-10 overflow-auto p-2">
+		<table class="table-auto container bg-white shadow-md rounded-lg">
+			<thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+				<tr>
+					<th class="hidden md:inline-block py-3 px-6 text-left"></th>
+                    <th class="py-3 px-6 text-left">ID</th>
+					<th class="py-3 px-6 text-left">Last</th>
+					<th class="hidden md:inline-block py-3 px-6 text-left">Email</th>
+					<th class="py-3 px-6 text-center">Role</th>
+					<th class="py-3 px-6 text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody
+				id="admin-user-table-body"
+				hx-confirm="Are you sure?"
+				hx-target="closest tr"
+				hx-swap="outerHTML"
+				class="text-gray-600 text-sm font-light"
+			>
+                for _, user := range users {
+                    @UserRow(user)
+                }
+                if len(users) == 0 {
+					@EmptyRow()
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+templ UserRow(user models.User) {
+	<tr class="border-b border-gray-200 hover:bg-gray-100">
+		<td class="hidden md:inline-block mx-auto py-3 px-2">
+            <img class="size-6 lg:size-8 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt=""/>
+		</td>
+        <td class="py-3 px-6 text-left">
+        <span>{ strconv.Itoa(user.ID) }</span>
+        </td>
+		<td class="py-3 px-6 text-left">
+			<span class="font-medium">{ user.LastName }</span>
+		</td>
+		<td class="hidden md:inline-block mx-auto py-3 px-2">
+			<span>{ user.Email }</span>
+		</td>
+		<td class="py-3 px-6 text-center">
+			<span class={templ.KV("bg-zinc-900 text-zinc-100", user.Role.String() == "admin"),templ.KV("bg-neutral-200 text-neutral-600", user.Role.String() != "admin"),"py-1 px-3 rounded-full text-xs font-medium"}>{ user.Role.String() }</span>
+		</td>
+        if user.Role != models.ADMIN {
+            <td class="py-3 px-6 text-center">
+                <div class=" flex item-center justify-center space-x-3">
+                    <a href={ templ.URL(fmt.Sprintf("/admin/jobs/new/%d",user.ID)) }>
+                        <button
+                        class="size-8 p-2  text-gray-800 rounded-md transition transform hover:scale-110 hover:cursor-pointer"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package-plus"><path d="M16 16h6"/><path d="M19 13v6"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
+                        </button>
+                    </a>
+                    <button
+                    class="size-8 p-2  text-gray-800 rounded-md transition transform hover:scale-110 hover:cursor-pointer"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                    <button
+                    hx-delete={ fmt.Sprintf("/admin/users/%d", user.ID) }
+                class="size-8 p-2  text-rose-400 rounded-md transition transform hover:scale-110 hover:cursor-pointer"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                    </button>
+                </div>
+            </td>
+            }  else {
+                <td class="py-3 px-6 text-center"></td>
+            }
+	</tr>
+}
+
+templ EditPopUp(userId int) {
+        <div id="user-edit-popup" class="hidden absolute right-5 z-50 w-36 bg-white text-sm rounded-md border boder-zinc-900">
+                <a href="#" class="block p-1 text-gray-800 hover:bg-gray-100">Edit Item</a>
+                <a href="#" class="block p-1 text-gray-800 hover:bg-gray-100">View Details</a>
+        </div>
+    }
+
+templ EmptyTable() {
+	<table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+		<thead class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+			<tr>
+				<th class="py-3 px-6 text-left">Name</th>
+				<th class="py-3 px-6 text-left">ID</th>
+				<th class="py-3 px-6 text-left">Email</th>
+				<th class="py-3 px-6 text-center">Role</th>
+				<th class="py-3 px-6 text-center">Actions</th>
+			</tr>
+		</thead>
+		<tbody class="text-gray-600 text-sm font-light">
+			<tr class="border-b border-gray-200 hover:bg-gray-100">
+				<p class="font-medium p-2">No Users...</p>
+			</tr>
+		</tbody>
+	</table>
+}
+
+templ EmptyRow() {
+	<tr class="border-b border-gray-200 hover:bg-gray-100">
+		<p class="font-medium p-2">No Users...</p>
+	</tr>
+}

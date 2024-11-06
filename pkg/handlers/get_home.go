@@ -21,7 +21,7 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	page := templates.Home()
-	err := templates.Layout(page, isAuth, "Notify").Render(r.Context(), w)
+	err := templates.Layout(page, isAuth, "home", "Notify").Render(r.Context(), w)
 	if err != nil {
 		h.slog.Error("Failed to home page: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)

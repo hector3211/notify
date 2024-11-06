@@ -3,36 +3,69 @@ package templates
 import "server/models"
 
 templ Toast(toastType models.Notification, message string) {
-if toastType == models.SuccessNotification {
-<div id="toast" hx-on::load="setTimeout(() => { this.remove() }, 3000)"
-    class="flex items-center justify-center space-x-2 text-left text-sm fixed z-[1000] bottom-5 right-5 rounded-lg p-5 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check">
-        <path d="M20 6 9 17l-5-5"></path>
-    </svg>
-    <p class="font-medium">{ message }</p>
-</div>
-} else if toastType == models.InfoNotification {
-<div id="toast" hx-on::load="setTimeout(() => { this.remove() }, 3000)"
-    class="flex items-center justify-center space-x-2 text-left text-sm fixed z-[1000] bottom-5 right-5 rounded-lg p-5 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert">
-        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
-        <path d="M12 9v4"></path>
-        <path d="M12 17h.01"></path>
-    </svg>
-    <p class="font-medium">{ message }</p>
-</div>
-} else {
-<div id="toast" hx-on::load="setTimeout(() => { this.remove() }, 3000)"
-    class="flex items-center justify-center space-x-2 text-left text-sm fixed z-[1000] bottom-5 right-5 rounded-lg p-5 shadow-md bg-background text-foreground transition-opacity duration-[2000ms] opacity-100">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" x2="12" y1="8" y2="12"></line>
-        <line x1="12" x2="12.01" y1="16" y2="16"></line>
-    </svg>
-    <p class="font-medium">{ message }</p>
-</div>
-}
+	<div
+		id="toast"
+		class="fixed bottom-10 right-5  flex items-center justify-center text-left text-sm rounded-lg p-4 border border-zinc-900 bg-background text-foreground transition-opacity duration-[2000ms] opacity-100"
+		hx-on::load="setTimeout(() => { this.remove() }, 3000)"
+	>
+		if toastType == models.SuccessNotification {
+			<span class="flex items-center space-x-2">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="lucide lucide-check"
+				>
+					<path d="M20 6 9 17l-5-5"></path>
+				</svg>
+				<p class="font-medium">{ message }</p>
+			</span>
+		} else if toastType == models.InfoNotification {
+			<span class="flex items-center space-x-2">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="lucide lucide-triangle-alert"
+				>
+					<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+					<path d="M12 9v4"></path>
+					<path d="M12 17h.01"></path>
+				</svg>
+				<p class="font-medium">{ message }</p>
+			</span>
+		} else {
+			<span class="flex items-center space-x-2">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="lucide lucide-circle-alert"
+				>
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="12" x2="12" y1="8" y2="12"></line>
+					<line x1="12" x2="12.01" y1="16" y2="16"></line>
+				</svg>
+				<p class="font-medium">{ message }</p>
+			</span>
+		}
+	</div>
 }

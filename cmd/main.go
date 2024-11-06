@@ -17,6 +17,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	// "github.com/joho/godotenv"
 	_ "modernc.org/sqlite"
 )
 
@@ -79,6 +81,7 @@ func main() {
 
 		// admin
 		app.Get("/admin", handlers.NewAdminHandler(db, slogger).ServeHTTP)
+		app.Get("/admin/account", handlers.NewAdminAccountHanlder(db, slogger).ServeHTTP)
 		app.Get("/admin/jobs", handlers.NewAdminJobHandler(db, slogger).ServeHTTP)
 		app.Post("/admin/jobs", handlers.NewPostSearchJobHandler(db, slogger).ServeHTTP)
 		app.Delete("/admin/jobs/{id}", handlers.NewDeleteAdminJobHandler(db, slogger).ServeHTTP)
@@ -87,6 +90,7 @@ func main() {
 		app.Delete("/admin/users/{id}", handlers.NewDeleteAdminUserHandler(db, slogger).ServeHTTP)
 		// admin forms
 		app.Get("/admin/jobs/new", handlers.NewGetAdminCreateJobHandler(db, slogger).ServeHTTP)
+		app.Get("/admin/jobs/new/{userid}", handlers.NewGetAdminCreateJobHandler(db, slogger).ServeHTTP)
 		app.Post("/admin/jobs/new", handlers.NewPostAdminCreateJobHandler(db, slogger).ServeHTTP)
 		app.Get("/admin/jobs/edit/{id}", handlers.NewGetAdminJobEditHandler(db, slogger).ServeHTTP)
 		app.Put("/admin/jobs/edit/{id}", handlers.NewPutAdminJobEditHandler(db, slogger).ServeHTTP)
@@ -107,9 +111,7 @@ func main() {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
-	// start server in groutine
 	go func() {
-		// slogger.Info("Started server on port %s", port)
 		slogger.Info(fmt.Sprintf("Started sever on port %s", port))
 		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
 			slogger.Error(fmt.Sprintf("ListenAndServe() :%v", err))

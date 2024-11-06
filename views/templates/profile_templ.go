@@ -33,7 +33,7 @@ func Profile(user middleware.UserContext, jobs []models.Invoice) templ.Component
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"max-w-6xl container mx-auto pt-28\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"max-w-6xl h-screen container mx-auto pt-28\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -74,7 +74,7 @@ func jobsCard(props []models.Invoice) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto p-4\"><div class=\"bg-white rounded-lg border border-zinc-900 p-6\"><h2 class=\"text-2xl font-bold mb-4\">Your Jobs</h2><div class=\"space-y-6\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container h-5/6 mx-auto p-4\"><div class=\"h-full overflow-auto rounded-lg border border-zinc-900 p-6\"><h2 class=\"text-2xl font-bold mb-4\">Your Jobs</h2><div class=\"space-y-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
