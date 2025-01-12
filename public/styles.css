@@ -750,6 +750,14 @@ video {
   height: 100vh;
 }
 
+.h-\[calc\(100vh-5rem\)\] {
+  height: calc(100vh - 5rem);
+}
+
+.h-\[calc\(100vh-3rem\)\] {
+  height: calc(100vh - 3rem);
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -1125,10 +1133,6 @@ video {
 
 .pt-28 {
   padding-top: 7rem;
-}
-
-.pt-5 {
-  padding-top: 1.25rem;
 }
 
 .text-left {
